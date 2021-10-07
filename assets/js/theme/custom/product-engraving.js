@@ -4,10 +4,6 @@ import $ from 'jquery';
 export default class CustomProductEngraving extends PageManager {
 
     onReady() {
-        /*
-        * Custom JS
-        */
-        //global variable
         var EngravingLengthID = null;
         var EngravingID = null;
         var productInputTextValueLength = null;
@@ -55,13 +51,10 @@ export default class CustomProductEngraving extends PageManager {
                         if(chars.length > 50 ){
                              alert('too much symbols. Please, make your text shorter');
                         }
-                        /* Validation end */
-                        //replace(/ +/g, '').trim() does not include spaces in the price
                         productInputTextValueLength = $productInputText.find('value').prevObject[0].value.replace(/ +/g, '').trim().length;
                         productInputTextValue = $productInputText.find('value').prevObject[0].value;
 
                         $(`#attribute_select_${EngravingLengthID} > option`).each(function() { //Run through the loop of each option
-                            //this.text = <options>text</options>
                             if(this.text.indexOf(productInputTextValueLength)>=0) { //Find if the string present as substring
                                $(`#attribute_select_${EngravingLengthID} > option`).removeAttr("selected"); //Remove the existing selected option
                                $(this).attr("selected","selected"); //Select this matching option as selected
@@ -93,7 +86,6 @@ export default class CustomProductEngraving extends PageManager {
 
              });
 
-            /* display; none input a engraving */
             document.querySelector('#none').addEventListener('change', yesnoCheck);
 
             let resGetCart = getCart(`/api/storefront/carts`);
@@ -102,7 +94,6 @@ export default class CustomProductEngraving extends PageManager {
             document.querySelector('#form-action-addToCart').addEventListener('click', function(e){
                 e.preventDefault();
                     if(cartItemsID) {
-                        /**/
                         createCartItems(`/api/storefront/carts/${cartItemsID}/items`, {
                             "lineItems": [
                                 {
@@ -119,7 +110,6 @@ export default class CustomProductEngraving extends PageManager {
                         .catch(error => console.error(error));
 
                     } else {
-                        /**/
                         createCartItems(`/api/storefront/carts`, {
                             "lineItems": [
                                 {
