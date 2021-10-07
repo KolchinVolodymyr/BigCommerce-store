@@ -408,3 +408,13 @@
         text-decoration: line-through;
     }
 }
+
+.myInput {
+    float: left;
+    margin-top: 3px;
+    margin-right: 5px;
+}
+input:focus + label{
+    outline: 0!important;
+    outline-offset: 0!important;
+}

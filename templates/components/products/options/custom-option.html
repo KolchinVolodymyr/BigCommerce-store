@@ -1,0 +1,44 @@
+<div class="form-field" data-product-attribute="input-text">
+    <!--  Choose gift option  -->
+
+    <input type="radio" name="yesno" id="none" class="myInput">
+    <label class="form-label form-label--alternate form-label--inlineSmall" for="none">
+        None
+    </label>
+
+    <input type="radio" name="yesno" id="yesCheck" class="myInput">
+    <label class="form-label form-label--alternate form-label--inlineSmall" for="yesCheck">
+        Choose gift option
+    </label>
+
+
+    <div id="ifYes" style="display:none">
+        <label class="form-label form-label--alternate form-label--inlineSmall" for="attribute_text_{{id}}">
+            {{ this.display_name }}:
+
+            {{> components/common/requireness-msg}}
+        </label>
+
+        <input class="form-input form-input--small myInput" type="text" id="attribute_text_{{id}}" name="attribute[{{this.id}}]" value="{{this.prefill}}" {{#if required}}required{{/if}} {{#if max_length}}maxlength="{{max_length}}"{{/if}}>
+
+        <!--  Send a congratulation inscription via email  -->
+
+        <input class="myInput" type="radio" name="congratulation" value="congratulation inscription via email" id="emailID">
+        <label class="form-label form-label--alternate" for="emailID">
+            Send a congratulation inscription via email
+        </label>
+        <div id="congratulationInscriptionIfYes" style="display:none">
+            <input type="email" id="emailInput" class="form-input form-input--small" >
+        </div>
+
+
+        <input class="myInput" type="radio" name="congratulation" value="gift card" id="gift">
+        <label class="form-label form-label--alternate form-label--inlineSmall" for="gift">
+            Print it on a gift card
+        </label>
+        <!--  Send a congratulation inscription via email  -->
+
+    </div>
+    <!--  Choose gift option  -->
+
+</div>
