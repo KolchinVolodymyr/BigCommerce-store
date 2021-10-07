@@ -23,7 +23,9 @@
         {{/if}}
         {{#block "amp-scripts"}}{{/block}}
     </head>
-    <body>
+    
+<body><script id="BC_GraphQL_Token" type="application/json">"{{settings.storefront_api.token}}"</script>
+
         {{#block "page"}} {{/block}}
     </body>
 </html>

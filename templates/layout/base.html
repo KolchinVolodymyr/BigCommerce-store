@@ -60,7 +60,9 @@
         {{~inject 'carouselActiveDotAriaLabel' (lang 'carousel.active_dot_aria_label')}}
         {{~inject 'carouselContentAnnounceMessage' (lang 'carousel.content_announce_message')}}
     </head>
-    <body>
+    
+<body><script id="BC_GraphQL_Token" type="application/json">"{{settings.storefront_api.token}}"</script>
+
         <svg data-src="{{cdn 'img/icon-sprite.svg'}}" class="icons-svg-sprite"></svg>
 
         {{> components/common/header }}
