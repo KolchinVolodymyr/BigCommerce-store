@@ -64,9 +64,6 @@ export default class CustomProductEngraving extends PageManager {
                     });
                 }
             });
-            /*
-            *
-            */
 
             /*function show input for a engraving  */
             function yesnoCheck() {
