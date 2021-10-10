@@ -130,3 +130,24 @@
         width: 100%;
     }
 }
+
+.containerCustom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    div{
+        flex: 32%;
+    }
+    .item-title-product {
+        font-size: 25px;
+        height: 75px;
+    }
+    .description {
+        height: 151px;
+        width: 100%;
+        overflow: hidden;
+    }
+}
+.total {
+    font-size: 25px;
+}

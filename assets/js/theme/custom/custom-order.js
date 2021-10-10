@@ -2,22 +2,23 @@ import PageManager from '../page-manager';
 import get from 'bigcommerce-graphql';
 import regeneratorRuntime from 'regenerator-runtime';
 import utils from '@bigcommerce/stencil-utils';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import ProductItem from './reactComponent/productItemOrder'
+import ProductTotal from "./reactComponent/productOrderTotal";
 
 export default class Custom extends PageManager {
     onReady() {
         let countryProduct = null;
         get (`{site { products(entityIds: [81,103,111]) { edges{ node{ id, entityId, name, description, sku, inventory {isInStock}, createdAt {utc} prices { price { value, currencyCode } } defaultImage { url(width:1280) } } } } } }`)
         .then((data) => {
-            data.site.products.forEach(el => {
-                var block = document.createElement("DIV");
-                block.innerHTML = ` <p id="title" title="${el.name}"> ${el.name} <p>
-                                    <img src="${el.defaultImage.url}" alt="">
-                                    ${el.description}
-                                    <input id="input_${el.entityId}" name="country" type="text"> `;
+            const container = $('#root')[0];
+            const container2 = $('#total')[0];
+            ReactDOM.render(<ProductItem context={data}/>, container);
 
-                document.getElementById("containerCustom").appendChild(block);
+            data.site.products.forEach(el => {
                 el.count = 1;
-                document.getElementById(`input_${el.entityId}`).addEventListener("input", function(e) {
+                document.getElementById(`${el.entityId}`).addEventListener("input", function(e) {
 
                 /* Validation start */
                 const regex = /[0-9]/;
@@ -31,9 +32,7 @@ export default class Custom extends PageManager {
                     alert('please input correct number');
                 }
                 /* Validation end */
-
-                    var countryProduct = document.getElementById(`input_${el.entityId}`).value;
-
+                var countryProduct = document.getElementById(`${el.entityId}`).value;
                     el.count =  countryProduct;
                     el.sumProd = el.count*el.prices.price.value;
                     sum(products);
@@ -43,9 +42,6 @@ export default class Custom extends PageManager {
 
             //listener input addToCart
             document.getElementById('addToCart').addEventListener('click', customAddToCartButton);
-
-            var total_price = document.createElement("DIV");
-            document.getElementById("containerCustom").appendChild(total_price);
             let products = data.site.products;
 
             function sum(products) {
@@ -54,7 +50,7 @@ export default class Custom extends PageManager {
                     priceArr.push(el.sumProd);
                 });
                 let total = priceArr.reduce((previousValue, currentValue) => previousValue + currentValue);
-                total_price.innerHTML = `Total: ${total}`;
+                ReactDOM.render(<ProductTotal context={total}/>, container2);
             }
             sum(products);
 
