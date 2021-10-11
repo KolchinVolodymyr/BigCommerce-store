@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ProductItem(props) {
+export default function ProductItem({data, onChange}) {
     return (
         <div className="containerCustom">
-            {props.context.site.products.map(el => {
+            {data.site.products.map(el => {
                 return (
                     <div key={el.id} className="item">
                         <h2 className="item-title-product">{el.name}</h2>
@@ -11,7 +11,13 @@ export default function ProductItem(props) {
                         <div className="description">
                             {el.description.replace(/<[^>]+>/g, '')}
                         </div>
-                        <input id={el.entityId} name="country" type="text"></input>
+                        <input
+                            id={el.entityId}
+                            name="country"
+                            type="text"
+                         //   value={value}
+                            error="Email address must contain a domain name."
+                            onChange={onChange}/>
                     </div>
                 )
             })}

@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ProductTotal(props) {
+export default function ProductTotal({total, currencyCode}) {
     return (
         <div className="total">
-            Total: {props.context}USD
+           Total: {total} {currencyCode}
         </div>
     )
 }
