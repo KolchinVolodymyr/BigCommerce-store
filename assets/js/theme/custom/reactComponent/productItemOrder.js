@@ -13,10 +13,9 @@ export default function ProductItem({data, onChange}) {
                         </div>
                         <input
                             id={el.entityId}
+                            className="form-input"
                             name="country"
                             type="text"
-                         //   value={value}
-                            error="Email address must contain a domain name."
                             onChange={onChange}/>
                     </div>
                 )

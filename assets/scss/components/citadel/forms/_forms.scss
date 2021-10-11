@@ -418,3 +418,10 @@ input:focus + label{
     outline: 0!important;
     outline-offset: 0!important;
 }
+.form-field--error {
+    border-color: #cc4749;
+}
+.item .form-inlineMessage {
+    position: absolute;
+    background: #fff;
+}

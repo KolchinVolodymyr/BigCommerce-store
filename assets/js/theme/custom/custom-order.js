@@ -2,13 +2,16 @@ import PageManager from '../page-manager';
 import get from 'bigcommerce-graphql';
 import regeneratorRuntime from 'regenerator-runtime';
 import utils from '@bigcommerce/stencil-utils';
-import React from 'react'
-import ReactDOM from 'react-dom'
-import ProductItem from './reactComponent/productItemOrder'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ProductItem from './reactComponent/productItemOrder';
 import ProductTotal from "./reactComponent/productOrderTotal";
-import nod from "nod-validate"
+import nod from "nod-validate";
 
 export default class Custom extends PageManager {
+    constructor(context) {
+        super(context);
+    }
     onReady() {
         let countryProduct = null;
         let currencyCode = null;
@@ -22,19 +25,6 @@ export default class Custom extends PageManager {
                 el.count = 1;
                 currencyCode = el.prices.price.currencyCode;
                 document.getElementById(`${el.entityId}`).addEventListener("input", function(e) {
-
-                /* Validation start */
-//                const regex = /[0-9]/;
-//                const chars = e.target.value.split('');
-//                const char = chars.pop();
-//                if (!regex.test(char)) {
-//                    e.target.value = chars.join('');
-//                    alert('restricted symbol');
-//                }
-//                if(chars.length > 1 ){
-//                    alert('please input correct number');
-//                }
-                /* Validation end */
                 var countryProduct = document.getElementById(`${el.entityId}`).value;
                     el.count =  countryProduct;
                     el.sumProd = el.count*el.prices.price.value;
@@ -66,33 +56,61 @@ export default class Custom extends PageManager {
             };
         });
 
+function announceInputErrorMessage({ element, result }) {
+    if (result) {
+        return;
+    }
+    const activeInputContainer = $(element).parent();
+    // the reason for using span tag is nod-validate lib
+    // which does not add error message class while initialising form.
+    // specific class is added since it can be multiple spans
+    const errorMessage = $(activeInputContainer).find('span.form-inlineMessage');
+
+    if (errorMessage.length) {
+        const $errMessage = $(errorMessage[0]);
+
+        if (!$errMessage.attr('role')) {
+            $errMessage.attr('role', 'alert');
+        }
+    }
+} ;
+
 
         const onChange = (e) => {
-            const regex = /[0-9]/;
-            const chars = e.target.value.split('');
-            const char = chars.pop();
             const $input = $(e.target);
 
+                    const newPasswordValidator = nod({
+
+                        submit: $input,
+                        tap: announceInputErrorMessage,
+                    });
+            const errorMessage = $('.form-field--error').find('span.form-inlineMessage');
+//            console.log('errorMessage', errorMessage);
+//            console.log('errorMessage length', errorMessage.length);
+//            console.log('errorMessage[0]', errorMessage[0]);
+            if (errorMessage.length) {
+                    const $errMessage = $(errorMessage[0]);
+
+                    if (!$errMessage.attr('role')) {
+                        $errMessage.attr('role', 'alert');
+                    }
+                }
             nod().add([{
                 // Raw dom element
                 selector: $input,
                 // Custom function. Notice that a call back is used. This means it should
                 // work just fine with ajax requests (is user name already in use?).
                 validate: function (callback, value) {
-                    callback(value % 2 === 0);
+                    if(!isNaN(value) && value<10) {
+                        $input.removeClass("form-field--error");
+                        callback(true);
+                    } else {
+                        $input.addClass("form-field--error");
+                        callback(false);
+                    }
                 },
-                errorMessage: 'Must be divisible by 2'
+                errorMessage: 'Please enter a valid product quantity(from 0 to 10)'
             }]);
-
-
-            if (!regex.test(char)) {
-                e.target.value = chars.join('');
-                $input.addClass('error');
-                //$addToCartBtn.prop('disabled', true);
-            }
-            if(chars.length > 1 ){
-                alert('please input correct number');
-            }
         };
     }
 }

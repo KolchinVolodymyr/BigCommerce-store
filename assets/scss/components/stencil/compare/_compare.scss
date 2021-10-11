@@ -135,8 +135,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    div{
-        flex: 32%;
+    .item{
+        flex: 30%;
+        margin: 0 15px;
     }
     .item-title-product {
         font-size: 25px;
