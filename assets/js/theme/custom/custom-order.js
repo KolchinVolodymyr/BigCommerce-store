@@ -78,23 +78,6 @@ function announceInputErrorMessage({ element, result }) {
 
         const onChange = (e) => {
             const $input = $(e.target);
-
-                    const newPasswordValidator = nod({
-
-                        submit: $input,
-                        tap: announceInputErrorMessage,
-                    });
-            const errorMessage = $('.form-field--error').find('span.form-inlineMessage');
-//            console.log('errorMessage', errorMessage);
-//            console.log('errorMessage length', errorMessage.length);
-//            console.log('errorMessage[0]', errorMessage[0]);
-            if (errorMessage.length) {
-                    const $errMessage = $(errorMessage[0]);
-
-                    if (!$errMessage.attr('role')) {
-                        $errMessage.attr('role', 'alert');
-                    }
-                }
             nod().add([{
                 // Raw dom element
                 selector: $input,
