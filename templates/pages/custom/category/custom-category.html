@@ -1,0 +1,28 @@
+
+{{inject "categoryProductsPerPage" theme_settings.categorypage_products_per_page}}
+{{inject "products" category.products}}
+{{#partial "head"}}
+{{#if pagination.category.previous}}
+<link rel="prev" href="{{pagination.category.previous}}">
+{{/if}}
+{{#if pagination.category.next}}
+<link rel="next" href="{{pagination.category.next}}">
+{{/if}}
+{{/partial}}
+
+{{#partial "page"}}
+
+{{#unless theme_settings.hide_category_page_heading }}
+
+{{{region name="category_below_header"}}}
+{{/unless}}
+{{{category.description}}}
+<div class="containerPage" id="containerPage">
+    <div id="total"></div>
+    <button class="button button--primary" type="submit" id="addToCart-above">Add to cart</button>
+    <div id="root"></div>
+    <button class="button button--primary" type="submit" id="addToCart-below">Add to cart</button>
+</div>
+
+{{/partial}}
+{{> layout/base}}
