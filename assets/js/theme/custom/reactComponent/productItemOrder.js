@@ -1,9 +1,8 @@
 import React from 'react'
 
-export default function ProductItem({data, onChange}) {
+export default function ProductItem({data, onChange, checkParams}) {
     return (
         <div className="containerCustom">
-            <div className="loadingOverlay"></div>
             {data.site.products.map(el => {
                 return (
                     <div key={el.id} className="item">
@@ -17,12 +16,15 @@ export default function ProductItem({data, onChange}) {
                             </div>
                         </div>
                         <div className="item-col-3">
-                            <input
-                                id={el.entityId}
-                                className="form-input form-input-order"
-                                name="country"
-                                type="text"
-                                onChange={onChange}/>
+                            <div className="blockInput">
+                                <input
+                                    id={el.entityId}
+                                    className="form-input form-input-order"
+                                    name="country"
+                                    type="text"
+                                    onChange={onChange}
+                                />
+                            </div>
                         </div>
                     </div>
                 )
