@@ -231,20 +231,16 @@
             <div data-product-option-change style="display:none;">
                 <!--ModifierOptions-->
                 {{inject 'ModifierOptions' product.options}}
-                {{#if customer '!==' null '&&' product.price.without_tax.value '>=' 50 }}
-                    {{#each product.options}}
-                        {{#if this.display_name '===' "Add a gift option" }}
-                            {{>components/products/options/custom-option}}
-                        {{else}}
-                            {{{dynamicComponent 'components/products/options'}}}
-                        {{/if}}
-                    {{/each}}
-                {{else}}
-                    {{#each product.options}}
-                        {{#if this.display_name '!=='  "Add a gift option"  }}
-                            {{{dynamicComponent 'components/products/options'}}}
-                        {{/if}}
-                    {{/each}}
+                {{#if customer '!==' null }}
+                    {{#if product.price.without_tax.value '>=' 50 }}
+                        {{#each product.options}}
+                            {{#if this.display_name '===' "Add a gift option" }}
+                                {{>components/products/options/custom-option}}
+                            {{else}}
+                                {{{dynamicComponent 'components/products/options'}}}
+                            {{/if}}
+                        {{/each}}
+                    {{/if}}
                 {{/if}}
             </div>
 

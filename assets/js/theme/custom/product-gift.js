@@ -1,68 +1,135 @@
 import PageManager from '../page-manager';
-import $ from 'jquery';
+import nod from "nod-validate";
 
 export default class CustomProductGift extends PageManager {
     constructor (context) {
         super(context);
+        this.giftOptionID = null;
+        this.showInputGift = $('#showInputGiftOption')[0];
+        this.noneInputGift = $('#none')[0];
+        this.sendCongratulationEmail = $('#emailID')[0];
+        this.printGiftCard = $('#gift')[0];
+        this.$addToCartBtn = $('#form-action-addToCart');
+        this.$addToCartBtn.on('click', () => this.AddToCartButton());
+        this.OptionsID = null;
+        this.emailInput = $('#emailInput')[0];
     }
 
     onReady() {
-        var giftOptionID = null;
         this.context.ModifierOptions.forEach(item => {
              if(item.display_name === 'Add a gift option') {
-                giftOptionID = '#attribute_text_'+item.id;
+                this.giftOptionID = '#attribute_text_'+item.id;
              }
         });
-        /* Event listener input Congratulatory inscription */
-        document.querySelector(giftOptionID).addEventListener('input', this.validate);
-
-        /* Event listener input */
-        /* show input for a gift */
-        document.querySelector('#yesCheck').addEventListener('change', function(){
-            document.getElementById('ifYes').style.display = 'block';
-        });
-        /* none input for a gift */
-        document.querySelector('#none').addEventListener('change',function(){
-            document.getElementById('ifYes').style.display = 'none';
-        });
-        /**/
-        /* Event listener input */
-        /* Send a congratulation inscription via email */
-        document.querySelector('#emailID').addEventListener('change', function () {
-            document.getElementById('congratulationInscriptionIfYes').style.display = 'block';
-        });
-
-        /* Event listener input */
-        /* Print it on a gift card */
-        document.querySelector('#gift').addEventListener('change', function() {
-            document.getElementById('congratulationInscriptionIfYes').style.display = 'none';
-        });
-
-        var textInput = document.querySelector(giftOptionID);
-        var emailInput = document.querySelector("#emailInput");
-        var btn = document.querySelector("#form-action-addToCart");
-
-        btn.addEventListener("click", function() {
-            if (document.getElementById('gift').checked === true) {
-                document.querySelector(giftOptionID).value += "\n" + " Print it on a gift card ";
+        this.context.ModifierOptions.forEach(item => {
+            if(item.display_name === 'Options') {
+                this.OptionsID = '#attribute_text_'+item.id;
+                $(`[for*=attribute_text_${item.id}]`).hide();
             }
-            if (document.getElementById('emailID').checked === true) {
-                document.querySelector(giftOptionID).value += "\n" + " Send a congratulation inscription via email: " + emailInput.value;
-            }
+            $(`${this.OptionsID}`).hide();
         });
+
+        /**
+         *  Event listener input
+         *  Congratulatory inscription
+         */
+        document.querySelector(this.giftOptionID).addEventListener('input', this.onChangeGift);
+
+        /**
+         *  Event listener input
+         *  show input for a gift
+         */
+        this.showInputGift.addEventListener('change', function(){
+            $('#inputGift').show();
+            $(this.giftOptionID)[0].setAttribute("required", "")
+        }.bind(this));
+
+        /**
+         *  Event listener input
+         *  None input for a gift
+         */
+        this.noneInputGift.addEventListener('change',function(){
+            $('#inputGift').hide();
+            $(this.giftOptionID)[0].removeAttribute("required", "")
+        }.bind(this));
+
+        /**
+         * Event listener input
+         * Send a congratulation inscription via email
+         */
+        this.sendCongratulationEmail.addEventListener('change', function () {
+            $('#formInputEmail').show();
+            this.emailInput.setAttribute("required", "");
+        }.bind(this));
+
+        /**
+         * Event listener input
+         * Print it on a gift card
+         */
+        this.printGiftCard.addEventListener('change', function() {
+            this.emailInput.removeAttribute("required", "");
+            $('#formInputEmail').hide();
+        }.bind(this));
+
+        /**
+         * Event listener input
+         * Validation Email input
+         */
+        this.emailInput.addEventListener('input', this.onChangeEmail);
+
     }
 
-    /*input validation function */
-    validate(e) {
-        const regex = /[A-Za-z ,.]/;
-        const chars = e.target.value.split('');
-        const char = chars.pop();
-        if (!regex.test(char)) {
-            e.target.value = chars.join('');
-            alert('unknown or restricted symbol');
+    /**
+     * *
+     * @constructor
+     */
+    AddToCartButton (){
+        if (document.getElementById('gift').checked === true) {
+            document.querySelector(this.OptionsID).value = "Print it on a gift card ";
         }
-        if(chars.length > 199 ){
-            alert('too much symbols. Please, make your text shorter');
+        if (document.getElementById('emailID').checked === true) {
+            document.querySelector(this.OptionsID).value = "Send a congratulation inscription via email: " + this.emailInput.value;
         }
+    }
+
+    /**
+     * *
+     * @param e
+     */
+    onChangeGift(e) {
+        const $input = $(e.target);
+        nod().add([{
+            // Raw dom element
+            selector: $input,
+            // Custom function. Notice that a call back is used. This means it should
+            // work just fine with ajax requests (is user name already in use?).
+            validate: "max-length:200",
+            errorMessage: 'too much symbols. Please, make your text shorter'
+        },
+        {
+            selector:  $input,
+            validate: function (callback, value){
+                if (value.match(/^[a-zA-Z_ ]*$/)) {
+                    callback(true)
+                } else {
+                    callback(false);
+
+                }
+            },
+            errorMessage: 'unknown or restricted symbol'
+        }]);
+    };
+
+
+
+    onChangeEmail(e) {
+        const $input = $(e.target);
+        nod().add([{
+            // Raw dom element
+            selector: $input,
+            //"email" (Uses the RFC822 spec to check validity)
+            validate: "email",
+            errorMessage: 'Please enter a valid Email'
+        }]);
     }
 }
