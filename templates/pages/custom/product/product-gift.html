@@ -229,7 +229,10 @@
             <input type="hidden" name="action" value="add">
             <input type="hidden" name="product_id" value="{{product.id}}"/>
             <div data-product-option-change style="display:none;">
+                {{inject 'optionGiftTextField' (lang 'products.option_gift_text_field')}}
+                {{inject 'optionDeliveryMessage' (lang 'products.option_delivery_message')}}
                 <!--ModifierOptions-->
+                {{inject 'product' products.shipping_free}}
                 {{inject 'ModifierOptions' product.options}}
                 {{#if customer '!==' null }}
                     {{#if product.price.without_tax.value '>=' 50 }}

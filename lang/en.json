@@ -752,6 +752,8 @@
         "swatch_option_announcement": "Selected {swatch_name} is",
         "shipping": "Shipping:",
         "shipping_fixed": "{amount} (Fixed Shipping Cost)",
+        "option_gift_text_field": "Add a gift option",
+        "option_delivery_message": "Delivery message",
         "shipping_free": "Free Shipping",
         "shipping_calculated": "Calculated at Checkout",
         "sold_out": "Sold Out",

@@ -13,16 +13,18 @@ export default class CustomProductGift extends PageManager {
         this.$addToCartBtn.on('click', () => this.AddToCartButton());
         this.OptionsID = null;
         this.emailInput = $('#emailInput')[0];
+        this.printOnGiftCard = $('[for=gift]').text().trim();
+        this.SendCongratulationInscriptionEmail =$('[for=emailID]').text().trim();
     }
 
     onReady() {
         this.context.ModifierOptions.forEach(item => {
-             if(item.display_name === 'Add a gift option') {
+             if(item.display_name === this.context.optionGiftTextField) {
                 this.giftOptionID = '#attribute_text_'+item.id;
              }
         });
         this.context.ModifierOptions.forEach(item => {
-            if(item.display_name === 'Options') {
+            if(item.display_name === this.context.optionDeliveryMessage) {
                 this.OptionsID = '#attribute_text_'+item.id;
                 $(`[for*=attribute_text_${item.id}]`).hide();
             }
@@ -85,10 +87,10 @@ export default class CustomProductGift extends PageManager {
      */
     AddToCartButton (){
         if (document.getElementById('gift').checked === true) {
-            document.querySelector(this.OptionsID).value = "Print it on a gift card ";
+            document.querySelector(this.OptionsID).value = this.printOnGiftCard;
         }
         if (document.getElementById('emailID').checked === true) {
-            document.querySelector(this.OptionsID).value = "Send a congratulation inscription via email: " + this.emailInput.value;
+            document.querySelector(this.OptionsID).value = this.SendCongratulationInscriptionEmail + this.emailInput.value;
         }
     }
 
