@@ -43,3 +43,18 @@
         text-transform: none;
     }
 }
+
+.inputForm  .form-inlineMessage{
+    position: absolute;
+    background: #fff;
+}
+.inputForm {
+    padding-bottom: 45px;
+}
+.formInputEmail .form-inlineMessage{
+    position: absolute;
+    background: #fff;
+}
+.formInputEmail {
+    height: 60px;
+}

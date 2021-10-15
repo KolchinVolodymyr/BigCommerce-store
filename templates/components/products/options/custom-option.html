@@ -5,29 +5,29 @@
     <label class="form-label form-label--alternate form-label--inlineSmall" for="none">
         None
     </label>
-
-    <input type="radio" name="yesno" id="yesCheck" class="myInput">
-    <label class="form-label form-label--alternate form-label--inlineSmall" for="yesCheck">
+<!--showInputGiftOption-->
+    <input type="radio" name="yesno" id="showInputGiftOption" class="myInput">
+    <label class="form-label form-label--alternate form-label--inlineSmall" for="showInputGiftOption">
         Choose gift option
     </label>
+    <div id="inputGift" style="display:none">
+        <div class="inputForm">
+            <label class="form-label form-label--alternate form-label--inlineSmall" for="attribute_text_{{id}}">
+                {{ this.display_name }}:
 
+                {{> components/common/requireness-msg}}
+            </label>
 
-    <div id="ifYes" style="display:none">
-        <label class="form-label form-label--alternate form-label--inlineSmall" for="attribute_text_{{id}}">
-            {{ this.display_name }}:
+            <input class="form-input form-input--small myInput" type="text" id="attribute_text_{{id}}" name="attribute[{{this.id}}]" value="{{this.prefill}}" {{#if required}}required{{/if}} {{#if max_length}}maxlength="{{max_length}}"{{/if}}>
 
-            {{> components/common/requireness-msg}}
-        </label>
-
-        <input class="form-input form-input--small myInput" type="text" id="attribute_text_{{id}}" name="attribute[{{this.id}}]" value="{{this.prefill}}" {{#if required}}required{{/if}} {{#if max_length}}maxlength="{{max_length}}"{{/if}}>
-
+        </div>
         <!--  Send a congratulation inscription via email  -->
 
         <input class="myInput" type="radio" name="congratulation" value="congratulation inscription via email" id="emailID">
         <label class="form-label form-label--alternate" for="emailID">
             Send a congratulation inscription via email
         </label>
-        <div id="congratulationInscriptionIfYes" style="display:none">
+        <div id="formInputEmail" class="formInputEmail" style="display:none">
             <input type="email" id="emailInput" class="form-input form-input--small" >
         </div>
 
