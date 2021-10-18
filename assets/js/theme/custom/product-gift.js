@@ -35,7 +35,7 @@ export default class CustomProductGift extends PageManager {
          *  Event listener input
          *  Congratulatory inscription
          */
-        document.querySelector(this.giftOptionID).addEventListener('input', this.onChangeGift);
+        document.querySelector(this.giftOptionID).addEventListener('input', this.onChangeGift.bind(this));
 
         /**
          *  Event listener input
@@ -43,7 +43,8 @@ export default class CustomProductGift extends PageManager {
          */
         this.showInputGift.addEventListener('change', function(){
             $('#inputGift').show();
-            $(this.giftOptionID)[0].setAttribute("required", "")
+            $(this.giftOptionID)[0].setAttribute("required", "");
+            $(this.printGiftCard)[0].setAttribute("checked", "");
         }.bind(this));
 
         /**
@@ -52,7 +53,7 @@ export default class CustomProductGift extends PageManager {
          */
         this.noneInputGift.addEventListener('change',function(){
             $('#inputGift').hide();
-            $(this.giftOptionID)[0].removeAttribute("required", "")
+            $(this.giftOptionID)[0].removeAttribute("required", "");
         }.bind(this));
 
         /**
@@ -77,7 +78,7 @@ export default class CustomProductGift extends PageManager {
          * Event listener input
          * Validation Email input
          */
-        this.emailInput.addEventListener('input', this.onChangeEmail);
+        this.emailInput.addEventListener('input', this.onChangeEmail.bind(this));
 
     }
 
@@ -90,7 +91,7 @@ export default class CustomProductGift extends PageManager {
             document.querySelector(this.OptionsID).value = this.printOnGiftCard;
         }
         if (document.getElementById('emailID').checked === true) {
-            document.querySelector(this.OptionsID).value = this.SendCongratulationInscriptionEmail + this.emailInput.value;
+            document.querySelector(this.OptionsID).value = this.SendCongratulationInscriptionEmail + " " + this.emailInput.value;
         }
     }
 
@@ -106,32 +107,31 @@ export default class CustomProductGift extends PageManager {
             // Custom function. Notice that a call back is used. This means it should
             // work just fine with ajax requests (is user name already in use?).
             validate: "max-length:200",
-            errorMessage: 'too much symbols. Please, make your text shorter'
+            errorMessage: this.context.tooMuchSymbols
         },
         {
             selector:  $input,
             validate: function (callback, value){
                 if (value.match(/^[a-zA-Z_ ]*$/)) {
-                    callback(true)
+                    callback(true);
                 } else {
                     callback(false);
 
                 }
             },
-            errorMessage: 'unknown or restricted symbol'
+            errorMessage: this.context.unknowRestrictedSymbol
         }]);
     };
 
-
-
     onChangeEmail(e) {
+        let emailNod = nod();
         const $input = $(e.target);
-        nod().add([{
+        emailNod.add([{
             // Raw dom element
             selector: $input,
             //"email" (Uses the RFC822 spec to check validity)
             validate: "email",
-            errorMessage: 'Please enter a valid Email'
+            errorMessage: this.context.useValidEmail
         }]);
     }
 }

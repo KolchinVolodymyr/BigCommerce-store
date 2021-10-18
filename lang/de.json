@@ -663,7 +663,9 @@
                 "name": "Bitte geben Sie Ihren Namen ein.",
                 "password": "Bitte geben Sie ein Passwort ein.",
                 "password_match": "Ihre Passwörter stimmen nicht überein.",
-                "email_address": "Bitte geben Sie eine gültige E-Mail-Adresse ein, beispielsweise benutzer@beispiel.de."
+                "email_address": "Bitte geben Sie eine gültige E-Mail-Adresse ein, beispielsweise benutzer@beispiel.de.",
+                "too_much_symbols": "zu viele Symbole. Bitte kürzen Sie Ihren Text ",
+                "unknow_restricted_symbol": "unbekanntes oder eingeschränktes Symbol "
             },
             "contact": {
                 "email_address": "Bitte geben Sie eine gültige E-Mail-Adresse ein, beispielsweise benutzer@beispiel.de.",
@@ -691,6 +693,10 @@
         }
     },
     "products": {
+        "none": "Keiner",
+        "gift_option": "Geschenkoption wählen",
+        "send_congratulation_inscription_email": "Senden Sie eine Gratulations-Inschrift per E-Mail",
+        "print_gift_card": "Drucken Sie es auf eine Geschenkkarte",
         "current_stock": "Aktueller Lagerbestand:",
         "quantity": "Menge:",
         "change_product_options": "Optionen für {name} ändern",
