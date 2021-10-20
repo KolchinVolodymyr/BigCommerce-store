@@ -6,16 +6,14 @@
         None
     </label>
 
-    <input class="myInput" type="radio" name="yesno" id="yesCheck">
-    <label class="form-label form-label--alternate form-label--inlineSmall" for="yesCheck">
+    <input class="myInput" type="radio" name="yesno" id="addEngraving">
+    <label class="form-label form-label--alternate form-label--inlineSmall" for="addEngraving">
         Add an engraving
     </label>
 
-    <div id="ifYes" style="display:none">
+    <div id="inputAddEngraving">
         <label class="form-label form-label--alternate form-label--inlineSmall" for="attribute_text_{{id}}">
-            {{ this.display_name }}:
-
-            {{> components/common/requireness-msg}}
+            {{ this.display_name }}
         </label>
 
         <input class=" form-input form-input--small" type="text" id="attribute_text_{{id}}" name="attribute[{{this.id}}]" value="{{this.prefill}}" {{#if required}}required{{/if}} {{#if max_length}}maxlength="{{max_length}}"{{/if}}>
