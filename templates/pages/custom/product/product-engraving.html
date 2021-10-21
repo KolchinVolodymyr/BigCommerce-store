@@ -236,7 +236,7 @@
                 {{inject 'showSwatchNames' theme_settings.show_product_swatch_names}}
                 {{#if customer}}
                     {{#each product.options}}
-                        {{#if this.display_name '===' "Engraving" }}
+                        {{#if this.display_name '===' (lang 'products.engraving') }}
                             {{>components/products/options/custom-option-engraving}}
                         {{else}}
                             {{{dynamicComponent 'components/products/options'}}}

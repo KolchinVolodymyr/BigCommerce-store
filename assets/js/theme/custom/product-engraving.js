@@ -1,21 +1,24 @@
 import PageManager from '../page-manager';
 import $ from 'jquery';
+import nod from "nod-validate";
 
 export default class CustomProductEngraving extends PageManager {
     constructor (context) {
         super(context);
         this.EngravingLengthID= null;
         this.$EngravingLengthSelect = $('[id*="attribute_select"]');
-        this.$EngravingLengthSelectLabel = $('[for*="attribute_select"]')
+        this.$EngravingLengthSelectLabel = $('[for*="attribute_select"]');
         this.EngravingID = null;
         this.productInputTextValueLength = null;
         this.productInputTextValue = '';
         this.$productInput = $('[id*="attribute_text"]')[0];
         this.productId = this.context.ModifierProduct.id;
         this.productCount = document.getElementById('qty[]').value;
-        this.optionValueID = null;//?? нужно определить 1-й ID который === (Length = 0)
+        this.optionValueID = null;
         this.cartItemsID = '';
         this.inputAddEngraving = document.getElementById('inputAddEngraving');
+        this.Nod = nod();
+        this.Nod.configure({submit:document.getElementById('form-action-addToCart'), disableSubmit: true});
     }
     onReady() {
         $('#none').prop('checked', true);
@@ -42,7 +45,6 @@ export default class CustomProductEngraving extends PageManager {
 
             //Find an object whose name 'Engraving'
             if(item.display_name === 'Engraving') {
-                //Listener input
                 this.EngravingID = item.id;
                 document.querySelector('[id*="attribute_text"]').addEventListener('input', function(e) {
                     const $productInputText = $('[id*="attribute_text"]');
@@ -50,7 +52,7 @@ export default class CustomProductEngraving extends PageManager {
                     let productInputTextValueLength = $productInputText.find('value').prevObject[0].value.replace(/ +/g, '').trim().length;
                     this.productInputTextValue = $productInputText.find('value').prevObject[0].value;
 
-                    let EngravingLengthID = this.EngravingLengthID;//???
+                    let EngravingLengthID = this.EngravingLengthID;
                     $(`#attribute_select_${this.EngravingLengthID} > option`).each(function() { //Run through the loop of each option
                     if(this.text.indexOf(productInputTextValueLength)>=0) { //Find if the string present as substring
                         $(`#attribute_select_${EngravingLengthID} > option`).removeAttr("selected"); //Remove the existing selected option
@@ -62,8 +64,6 @@ export default class CustomProductEngraving extends PageManager {
             }
         });
 
-
-
         /* Event listener input */
         /* show input for a engraving */
         document.querySelector('#addEngraving').addEventListener('change', function(){
@@ -71,92 +71,46 @@ export default class CustomProductEngraving extends PageManager {
             $(this.$productInput)[0].setAttribute("required", "");
         }.bind(this));
 
+        /**
+        * Event listener input
+        * onChange
+        */
+        document.querySelector('#inputAddEngraving').addEventListener('input', this.onChange.bind(this));
+
         /* Event listener input */
         /* hide input for a engraving */
         document.querySelector('#none').addEventListener('change', function(){
             $('#inputAddEngraving').hide();
             $(this.$productInput)[0].removeAttribute("required", "");
-            $('[id*="attribute_text"]')[0].value = ''; //value input = null
+            $('[id*="attribute_text"]')[0].value = '';
         }.bind(this));
 
         this.getCart(`/api/storefront/carts`);
-
             /*Add event Listener*/
             document.querySelector('#form-action-addToCart').addEventListener('click', function(e){
-                console.log('this', this);
-                console.log('this.cartItemsID', this.cartItemsID);
                 e.preventDefault();
-                    if(this.cartItemsID) {
-                        console.log("this", this);
-                        console.log('this.optionValueID updateCart', this.optionValueID);
-                        createCartItems(`/api/storefront/carts/${this.cartItemsID}/items`, {
-                            "lineItems": [
-                                {
-                                    "quantity": this.productCount,
-                                    "productId": this.productId,
-                                    "optionSelections": [
-                                        {"optionId": this.EngravingLengthID, "optionValue": this.optionValueID},
-                                        {"optionId": this.EngravingID, "optionValue": `${this.productInputTextValue}`}
-                                    ]
-                                }
+                if (this.Nod.getStatus([this.$productInput]) == 'invalid') {
+                    e.preventDefault();
+                } else {
+                    this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `/${this.cartItemsID}/item` : ''}`, {
+                        "lineItems": [{
+                            "quantity": this.productCount,
+                            "productId": this.productId,
+                            "optionSelections": [
+                                {"optionId": this.EngravingLengthID, "optionValue": this.optionValueID},
+                                {"optionId": this.EngravingID, "optionValue": `${this.productInputTextValue}`}
                             ]
-                        })
-                        .then((data)=> {
-                            console.log('data', data);
-                             console.log('updateCart');
-                            //window.location = '/cart.php'
-                            })
-                        .catch(error => console.error(error));
-
-                    } else {
-                        console.log('createCartItems');
-                        console.log("this", this);
-                        console.log('this.optionValueID createCart', this.optionValueID);
-                        createCartItems(`/api/storefront/carts`, {
-                            "lineItems": [
-                                {
-                                    "quantity": this.productCount,
-                                    "productId": this.productId,
-                                    "optionSelections": [
-                                        {"optionId": this.EngravingLengthID, "optionValue": this.optionValueID},
-                                        {"optionId": this.EngravingID, "optionValue": `${this.productInputTextValue}`}
-                                    ]
-                                }
-                            ]
-                        })
-                        .then(()=> {
-                                console.log('createCartItems');
-                                //window.location = '/cart.php'
-                            })
-                        .catch(error => console.error(error));
-                    }
-
+                        }]
+                    })
+                    .then(()=> {window.location = '/cart.php'})
+                }
             }.bind(this));
-
-            function createCartItems(url, cartItems) {
-                return fetch(url, {
-                    method: "POST",
-                    credentials: "same-origin",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(cartItems),
-                })
-                .then(response => response.json());
-            };
-
-
     }
 
-    /*function show input for a engraving  */
-//    yesnoCheck() {
-//        if (document.getElementById('addEngraving').checked) {
-//            document.getElementById('inputAddEngraving').style.display = 'block';
-//        }
-//        else document.getElementById('inputAddEngraving').style.display = 'none';
-//    }
 
-    /**/
+    /**
+    * Returns a Cart
+    */
     getCart(url) {
         return fetch(url, {
             method: "GET",
@@ -171,6 +125,47 @@ export default class CustomProductEngraving extends PageManager {
             })
         .catch(error => console.error(error));
     }
+    /**
+    * Creates a Cart
+    */
+    createCartItems(url, cartItems) {
+        return fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(cartItems),
+        })
+        .then(response => response.json());
+    };
 
+    /**
+    * Event listener input
+    * Validation
+    */
+    onChange(e) {
+        const $input = $(e.target);
+        this.Nod.add([{
+            // Raw dom element
+            selector: $input,
+            // Custom function. Notice that a call back is used. This means it should
+            // work just fine with ajax requests (is user name already in use?).
+            validate: "max-length:50",
+            errorMessage: this.context.tooMuchSymbols
+        },
+        {
+            selector:  $input,
+            validate: function (callback, value){
+                if (value.match(/^[a-zA-Z_ ]*$/)) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            },
+            errorMessage: this.context.unknowRestrictedSymbol
+        }]);
+        this.Nod.performCheck();
+    }
 
 }
