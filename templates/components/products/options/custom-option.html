@@ -1,44 +1,37 @@
 <div class="form-field" data-product-attribute="input-text">
     <!--  Choose gift option  -->
-
-    <input type="radio" name="yesno" id="none" class="myInput">
+    <input type="radio" name="yesno" id="none" class="myInput" checked="">
     <label class="form-label form-label--alternate form-label--inlineSmall" for="none">
-        None
+        {{lang 'products.none'}}
     </label>
-<!--showInputGiftOption-->
+    <!--showInputGiftOption-->
+    {{inject 'tooMuchSymbols' (lang 'forms.validate.common.too_much_symbols')}}
+    {{inject 'unknowRestrictedSymbol' (lang 'forms.validate.common.unknow_restricted_symbol')}}
     <input type="radio" name="yesno" id="showInputGiftOption" class="myInput">
     <label class="form-label form-label--alternate form-label--inlineSmall" for="showInputGiftOption">
-        Choose gift option
+        {{lang 'products.gift_option'}}
     </label>
     <div id="inputGift" style="display:none">
         <div class="inputForm">
             <label class="form-label form-label--alternate form-label--inlineSmall" for="attribute_text_{{id}}">
-                {{ this.display_name }}:
-
-                {{> components/common/requireness-msg}}
+                {{ this.display_name }}
             </label>
-
             <input class="form-input form-input--small myInput" type="text" id="attribute_text_{{id}}" name="attribute[{{this.id}}]" value="{{this.prefill}}" {{#if required}}required{{/if}} {{#if max_length}}maxlength="{{max_length}}"{{/if}}>
-
         </div>
         <!--  Send a congratulation inscription via email  -->
-
         <input class="myInput" type="radio" name="congratulation" value="congratulation inscription via email" id="emailID">
         <label class="form-label form-label--alternate" for="emailID">
-            Send a congratulation inscription via email
+            {{lang 'products.send_congratulation_inscription_email'}}
         </label>
         <div id="formInputEmail" class="formInputEmail" style="display:none">
+            {{inject 'useValidEmail' (lang 'forms.validate.common.email_address')}}
             <input type="email" id="emailInput" class="form-input form-input--small" >
         </div>
-
-
         <input class="myInput" type="radio" name="congratulation" value="gift card" id="gift">
         <label class="form-label form-label--alternate form-label--inlineSmall" for="gift">
-            Print it on a gift card
+            {{lang 'products.print_gift_card'}}
         </label>
         <!--  Send a congratulation inscription via email  -->
-
     </div>
     <!--  Choose gift option  -->
-
 </div>
