@@ -56,6 +56,7 @@ const customClasses = {
     'pages/custom/product/product-gift': () => import('./theme/custom/product-gift'),
     'pages/custom/product/product-engraving': () => import('./theme/custom/product-engraving'),
     'pages/custom/page/custom-order-page': () => import('./theme/custom/custom-order'),
+    'pages/custom/category/custom-category': () => import('./theme/custom/custom-category'),
 };
 
 /**
