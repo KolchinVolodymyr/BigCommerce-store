@@ -9,12 +9,13 @@ export default class CustomProductGift extends PageManager {
         this.noneInputGift = $('#none')[0];
         this.sendCongratulationEmail = $('#emailID')[0];
         this.printGiftCard = $('#gift')[0];
-        this.$addToCartBtn = $('#form-action-addToCart');
-        this.$addToCartBtn.on('click', () => this.AddToCartButton());
+        this.$addToCartBtn = $('#form-action-addToCart')[0];
         this.OptionsID = null;
         this.emailInput = $('#emailInput')[0];
         this.printOnGiftCard = $('[for=gift]').text().trim();
         this.SendCongratulationInscriptionEmail =$('[for=emailID]').text().trim();
+        this.Nod = nod();
+        this.Nod.configure({submit:  document.getElementById('form-action-addToCart'),disableSubmit: true});
     }
 
     onReady() {
@@ -54,6 +55,9 @@ export default class CustomProductGift extends PageManager {
         this.noneInputGift.addEventListener('change',function(){
             $('#inputGift').hide();
             $(this.giftOptionID)[0].removeAttribute("required", "");
+            this.emailInput.value = '';
+            document.querySelector(this.giftOptionID).value = '';
+            document.querySelector(this.OptionsID).value = null;
         }.bind(this));
 
         /**
@@ -80,18 +84,30 @@ export default class CustomProductGift extends PageManager {
          */
         this.emailInput.addEventListener('input', this.onChangeEmail.bind(this));
 
+        /**
+        * Event listener button
+        * Add to cart
+        */
+        this.$addToCartBtn.addEventListener('click', this.AddToCartButton.bind(this));
     }
 
     /**
      * *
      * @constructor
      */
-    AddToCartButton (){
-        if (document.getElementById('gift').checked === true) {
-            document.querySelector(this.OptionsID).value = this.printOnGiftCard;
-        }
-        if (document.getElementById('emailID').checked === true) {
-            document.querySelector(this.OptionsID).value = this.SendCongratulationInscriptionEmail + " " + this.emailInput.value;
+    AddToCartButton (e){
+        if(this.Nod.getStatus([$(this.giftOptionID)[0]])!=='invalid') {
+            if (document.getElementById('gift').checked === true) {
+                document.querySelector(this.OptionsID).value = this.printOnGiftCard;
+            }
+            if (document.getElementById('emailID').checked === true) {
+                document.querySelector(this.OptionsID).value = this.SendCongratulationInscriptionEmail + " " + this.emailInput.value;
+            }
+            if (document.getElementById('none').checked === true) {
+                 document.querySelector(this.OptionsID).value = '';
+            }
+        } else {
+            e.preventDefault();
         }
     }
 
@@ -101,7 +117,7 @@ export default class CustomProductGift extends PageManager {
      */
     onChangeGift(e) {
         const $input = $(e.target);
-        nod().add([{
+        this.Nod.add([{
             // Raw dom element
             selector: $input,
             // Custom function. Notice that a call back is used. This means it should
@@ -121,17 +137,18 @@ export default class CustomProductGift extends PageManager {
             },
             errorMessage: this.context.unknowRestrictedSymbol
         }]);
+        this.Nod.performCheck();
     };
 
     onChangeEmail(e) {
-        let emailNod = nod();
         const $input = $(e.target);
-        emailNod.add([{
+        this.Nod.add([{
             // Raw dom element
             selector: $input,
             //"email" (Uses the RFC822 spec to check validity)
             validate: "email",
             errorMessage: this.context.useValidEmail
         }]);
+        this.Nod.performCheck();
     }
 }
