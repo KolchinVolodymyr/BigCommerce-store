@@ -25,7 +25,7 @@ export default class CustomProductEngraving extends PageManager {
         $('#inputAddEngraving').hide();
         /**/
         this.context.ModifierOptions.forEach(item => {
-            if(item.display_name === 'Engraving length') {
+            if(item.display_name === this.context.Engravinglength) {
                 this.EngravingLengthID = item.id;
                 this.$EngravingLengthSelect.hide();
                 this.$EngravingLengthSelectLabel.hide();
@@ -44,7 +44,7 @@ export default class CustomProductEngraving extends PageManager {
             }
 
             //Find an object whose name 'Engraving'
-            if(item.display_name === 'Engraving') {
+            if(item.display_name === this.context.Engraving) {
                 this.EngravingID = item.id;
                 document.querySelector('[id*="attribute_text"]').addEventListener('input', function(e) {
                     const $productInputText = $('[id*="attribute_text"]');
