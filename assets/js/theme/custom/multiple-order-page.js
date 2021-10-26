@@ -4,12 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import initApolloClient from '../global/graphql/client';
 import flattenGraphQLResponse from 'humanize-graphql-response';
-import { render } from 'react-dom';
-import customProductOptions from '../../gql/productOption.gql';
+import customProductOptions from './gql/productOption.gql';
 import MultipleProductItem from './reactComponent/multipleProductItem';
 
 export default class CustomDemo extends PageManager {
-
     constructor(context) {
         super(context);
         this.$container = $('#variantsFormProduct')[0];
@@ -21,7 +19,9 @@ export default class CustomDemo extends PageManager {
         this.cartItemsID = '';
     }
 
-
+    /**
+     * Returns a list of product Variant Options.
+     */
     async getOptions(cursor) {
         return this.gqlClient
         .query({
@@ -36,6 +36,9 @@ export default class CustomDemo extends PageManager {
           });
     }
 
+    /**
+     * Adds a product to the cart
+     */
     addToCart() {
         let cartItems = [];
         let qtyFields = Array.from(document.getElementsByClassName('qtyField'));
@@ -55,7 +58,7 @@ export default class CustomDemo extends PageManager {
 
 
     /**
-    *
+    *   Adds a line items to the Cart
     */
     createCart(lineitems) {
         fetch(`/api/storefront/cart`)
@@ -87,7 +90,7 @@ export default class CustomDemo extends PageManager {
 
     onReady() {
         Promise.all([this.getOptions()]).then((data) => {
-               ReactDOM.render(<MultipleProductItem variants={this.productVariants} />, this.$container);
+               ReactDOM.render(<MultipleProductItem variants={this.productVariants} errorMessageStock={this.context.ErrorMessageStock}/>, this.$container);
                $('#productVariants').on('click', () => this.addToCart());
         })
     }
