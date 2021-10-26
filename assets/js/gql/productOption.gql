@@ -1,0 +1,59 @@
+query getCustomProductOptions(
+        $productId: Int!,
+        $pageSize: Int,
+        $cursor: String,
+    ) {
+        site {
+            product(entityId: $productId) {
+                id
+                entityId
+                name
+                variants(first: $pageSize after:$cursor) {
+                    pageInfo {
+                        endCursor
+                        hasNextPage
+                    }
+                    edges {
+                        node {
+                            id
+                            entityId
+                            sku
+                            inventory {
+                                aggregated {
+                                    availableToSell
+                                }
+                            }
+                            prices {
+                                price {
+                                    currencyCode
+                                    value
+                                }
+                            }
+                            options{
+                                edges {
+                                    node {
+                                        entityId
+                                        displayName
+                                        isRequired
+                                        values {
+                                            edges {
+                                                node {
+                                                    entityId
+                                                    label
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            defaultImage {
+                                url(width: 80)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+

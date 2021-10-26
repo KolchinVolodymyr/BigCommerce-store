@@ -1,0 +1,53 @@
+{site { products(entityIds: [${productID}]) { edges {
+                            node {
+                                id,
+                                entityId,
+                                name,
+                                description,
+                                sku,
+                                productOptions {
+                                    edges {
+                                      node {
+                                        entityId
+                                        displayName
+                                        ... on MultipleChoiceOption {
+                                          displayStyle
+                                          values {
+                                            edges {
+                                              node {
+                                                entityId
+                                                label
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                variants(first: 100) {
+                                    edges {
+                                      node {
+                                        sku
+                                        prices {
+                                            price {
+                                                value
+                                                currencyCode
+                                              }
+                                        }
+                                      }
+                                    }
+                                  }
+                                inventory {
+                                    aggregated {
+                                        availableToSell
+                                    }
+                                }
+                                prices {
+                                    price { value, currencyCode }
+                                }
+                                defaultImage { url(width:1280) }
+                            }
+                        }
+                     }
+                   }
+                 }
