@@ -91,7 +91,7 @@ export default class CustomCategory extends PageManager {
                     this.$addToCartBtnBelow.prop('disabled', true);
                 }
             }.bind(this),
-            errorMessage: `${this.context.validProductQuantity}`
+            errorMessage: "this.context.errorStockOn"
         },{
             selector: $input,
             validate: function (callback, value) {
@@ -120,7 +120,8 @@ export default class CustomCategory extends PageManager {
                     }
                 }
             }.bind(this),
-            errorMessage: `${this.context.errorStockOn} ${$input.context.dataset.productStock}`
+            errorMessage: `this.context.errorStockOn ${$input.context.dataset.productStock}`
+            //`We dont have enough stock on. Available quantity ${$input.context.dataset.productStock}. Please try again.`
         }]);
         this.Nod.performCheck();
     };
@@ -182,10 +183,10 @@ export default class CustomCategory extends PageManager {
                 this.$overlay.hide();
                 window.location = '/cart.php';
             } else {
-                showAlertModal(this.context.cartEmpty);
+                showAlertModal('Cart is empty, add product to cart ');
             }
         } else {
-            showAlertModal(this.context.enterValidData);
+            showAlertModal('Enter valid data (0-10)');
         }
     }
 
@@ -222,13 +223,14 @@ export default class CustomCategory extends PageManager {
     };
 
     onReady() {
+    console.log('this', this.context);
         this.$addToCartBtnAbove.prop('disabled', true);
         this.$addToCartBtnBelow.prop('disabled', true);
         this.getCart(`/api/storefront/carts`);
 
         this.context.products.forEach(element => {
             this.productsId.push(element.id);
-
+            //this.stock_level = element.stock_level;
             this.currencyCode = element.price.without_tax.currency;
         });
         this.getProduct(this.productsId);
