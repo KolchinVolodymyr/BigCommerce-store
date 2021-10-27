@@ -86,7 +86,16 @@
 
 .form-product-option {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
     border-top: 1px solid #626568;
+    padding-bottom: 10px;
+    @include breakpoint("medium") {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #626568;
+        padding-bottom: 0px;
+    }
 }

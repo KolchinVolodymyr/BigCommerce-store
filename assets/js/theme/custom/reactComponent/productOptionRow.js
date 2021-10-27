@@ -33,7 +33,7 @@ export default class ProductOptionsRow extends React.Component {
                     }
                 }
             }.bind(this),
-            errorMessage: `${this.props.errorMessageStock }`
+            errorMessage: `${this.props.errorMessageStock} ${this.stock}`
         }]);
         this.Nod.performCheck();
 
