@@ -1,0 +1,49 @@
+<!-- DO NOT DELETE
+    Access GraphQL query data with {{_.data}}
+    Access the widget id with {{_.id}}
+-->
+<h2 class="page-heading">{{ heading }}</h2>
+<div id="containerCarousel">
+    <section class="productCarousel"
+             data-slick='{
+             "arrows": false,
+             "mobileFirst": true,
+             "slidesToShow": 1,
+             "slidesToScroll": 1,
+             "autoplay": true,
+             "autoplaySpeed": 2000,
+             "slide": "[data-productcustom-slide]",
+             "responsive":[
+             {"breakpoint":800, "settings":{"slidesToShow":3,"arrows":true}},
+             {"breakpoint":1200, "settings":{"slidesToShow":4,"arrows":true}}]}'>
+
+    {{#each _.data.site.products.edges}}
+        {{#if node.prices.salePrice.value}}
+        <a style="text-decoration:none" href="{{node.path}}" data-productcustom-slide>
+            <div style="text-align:center;">
+                <div class="product-img" style="height: 220px">
+                    <img src="{{#if node.defaultImage '==' null}} https://cdn11.bigcommerce.com/s-d1y3ufri1f/stencil/bda89a40-08d3-013a-d44b-16c805b73009/img/ProductDefault.gif {{else}} {{node.defaultImage.url}} {{/if}}">
+                </div>
+                <h1 style="font-size:15px;">{{node.name}}</h1>
+                <div>
+                    <div class="price-section price-section--withoutTax non-sale-price--withoutTax">
+                        <span> Was: </span>
+                        <span data-product-non-sale-price-without-tax="" class="price price--non-sale">
+                            ${{node.prices.basePrice.value}}
+                        </span>
+                    </div>
+                    <div class="price-section price-section--withoutTax">
+                        <span class="price-now-label">Now:</span>
+                        <span data-product-price-without-tax="" class="price price--withoutTax">
+                            ${{node.prices.salePrice.value}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {{/if}}
+        {{/each}}
+        <span data-carousel-content-change-message class="aria-description--hidden" aria-live="polite" role="status"></span>
+    </section>
+</div>
+
