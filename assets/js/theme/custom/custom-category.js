@@ -35,59 +35,11 @@ export default class CustomCategory extends PageManager {
     *
     */
     getProduct(productID) {
-        get (`{site { products(entityIds: [${productID}]) { edges {
-                            node {
-                                id,
-                                entityId,
-                                name,
-                                description,
-                                sku,
-                                productOptions {
-                                    edges {
-                                      node {
-                                        entityId
-                                        displayName
-                                        ... on MultipleChoiceOption {
-                                          displayStyle
-                                          values {
-                                            edges {
-                                              node {
-                                                entityId
-                                                label
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                variants(first: 100) {
-                                    edges {
-                                      node {
-                                        sku
-                                        prices {
-                                            price {
-                                                value
-                                                currencyCode
-                                              }
-                                        }
-                                      }
-                                    }
-                                  }
-                                inventory {
-                                    aggregated {
-                                        availableToSell
-                                    }
-                                }
-                                prices {
-                                    price { value, currencyCode }
-                                }
-                                defaultImage { url(width:1280) }
-                            }
-                        }
-                     }
-                   }
-                 }`)
+        get (`{site { products(entityIds: [${productID}]) { edges {node {id,entityId,name,description, sku, productOptions {
+                edges { node { entityId displayName
+                    ... on MultipleChoiceOption { displayStyle values { edges { node { entityId label } } } } } } }
+            variants(first: 100) { edges { node { sku prices { price { value currencyCode } } } } }
+            inventory { aggregated { availableToSell } } prices { price { value, currencyCode } } defaultImage { url(width:1280)}}}}}}`)
             .then((data) => {
                 this.products = data.site.products;
                 ReactDOM.render(<ProductItem data={data} onChange={this.onChange.bind(this)}/>, this.$container);
@@ -117,7 +69,7 @@ export default class CustomCategory extends PageManager {
             // Custom function. Notice that a call back is used. This means it should
             // work just fine with ajax requests (is user name already in use?).
             validate: function (callback, value) {
-                if(!isNaN(value) && value<=10) {
+                if(!isNaN(value) && value<10) {
                     if(this.total == 0) {
                         callback(true);
                         this.$addToCartBtnAbove.prop('disabled', true);
@@ -139,30 +91,36 @@ export default class CustomCategory extends PageManager {
                     this.$addToCartBtnBelow.prop('disabled', true);
                 }
             }.bind(this),
-            errorMessage: 'Please enter a valid product quantity(from 0 to 10)'
+            errorMessage: `${this.context.validProductQuantity}`
         },{
             selector: $input,
             validate: function (callback, value) {
-                if($input.context.dataset?.productStock == undefined) {
+                if(this.total == 0) {
                     callback(true);
+                    this.$addToCartBtnAbove.prop('disabled', true);
+                    this.$addToCartBtnBelow.prop('disabled', true);
                 } else {
-                    if(value <=  $input.context.dataset?.productStock) {
+                    if($input.context.dataset?.productStock == undefined) {
                         callback(true);
-                        if( $('.form-field--error').length >= 1 ){
+                    } else {
+                        if(value <=  $input.context.dataset?.productStock) {
+                            callback(true);
+                            if( $('.form-field--error').length >= 1 ){
+                                this.$addToCartBtnAbove.prop('disabled', true);
+                                this.$addToCartBtnBelow.prop('disabled', true);
+                            } else {
+                                this.$addToCartBtnAbove.prop('disabled', false);
+                                this.$addToCartBtnBelow.prop('disabled', false);
+                            }
+                        } else {
+                            callback(false);
                             this.$addToCartBtnAbove.prop('disabled', true);
                             this.$addToCartBtnBelow.prop('disabled', true);
-                        } else {
-                            this.$addToCartBtnAbove.prop('disabled', false);
-                            this.$addToCartBtnBelow.prop('disabled', false);
                         }
-                    } else {
-                        callback(false);
-                        this.$addToCartBtnAbove.prop('disabled', true);
-                        this.$addToCartBtnBelow.prop('disabled', true);
                     }
                 }
             }.bind(this),
-            errorMessage: `We dont have enough stock on. Available quantity ${$input.context.dataset.productStock}. Please try again.`
+            errorMessage: `${this.context.errorStockOn} ${$input.context.dataset.productStock}`
         }]);
         this.Nod.performCheck();
     };
@@ -208,40 +166,26 @@ export default class CustomCategory extends PageManager {
     *
     */
     async customAddToCartButton () {
-        //let productCount = document.getElementById('qty[]').value;
         if (this.Nod.areAll('valid')) {
             if (this.total !== 0) {
                 this.$overlay.show();
                 for (const product of this.products) {
-                    if(product.count !==0 && product.productOptions.length!==0) {
-                        await this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, {
-                            "lineItems": [{
-                                "quantity": product.count,
-                                "productId": product.entityId,
-                                "optionSelections":  product.optionSelections
-                            }]
-                        }).then(cart => {
-                            this.cartItemsID = cart?.id;
-                        })
-                    }
-                    if(product.count !==0 && product.productOptions.length==0) {
+                    if(product.count !==0) {
                          await this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, {
                                 "lineItems": [{
                                     "quantity": product.count,
                                     "productId": product.entityId
                                 }]
-                         }).then(cart => {
-                             this.cartItemsID = cart?.id;
                          })
                     }
                 }
                 this.$overlay.hide();
-                window.location = '/cart.php'
+                window.location = '/cart.php';
             } else {
-                showAlertModal('корзина пустая, добавьте товар в корзину');
+                showAlertModal(this.context.cartEmpty);
             }
         } else {
-            showAlertModal('введите, валидные данные');
+            showAlertModal(this.context.enterValidData);
         }
     }
 
@@ -256,11 +200,11 @@ export default class CustomCategory extends PageManager {
                 "Content-Type": "application/json"
             }
         })
-            .then(response => response.json())
-            .then(cart => {
-                this.cartItemsID = cart[0]?.id
-            })
-            .catch(error => console.error(error));
+        .then(response => response.json())
+        .then(cart => {
+            this.cartItemsID = cart[0]?.id
+        })
+        .catch(error => console.error(error));
     }
     /**
      * Creates a Cart
@@ -273,7 +217,8 @@ export default class CustomCategory extends PageManager {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(cartItems),
-        }).then(response => response.json());
+        }).then(response => response.json())
+          .then((cart) => {this.cartItemsID = cart?.id})
     };
 
     onReady() {
@@ -283,7 +228,7 @@ export default class CustomCategory extends PageManager {
 
         this.context.products.forEach(element => {
             this.productsId.push(element.id);
-            //this.stock_level = element.stock_level;
+
             this.currencyCode = element.price.without_tax.currency;
         });
         this.getProduct(this.productsId);
