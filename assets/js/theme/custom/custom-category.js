@@ -27,9 +27,9 @@ export default class CustomCategory extends PageManager {
     }
 
     /**
-     *
-     *
-     */
+    *
+    *
+    */
     getProduct(productID) {
         get (`{site { products(entityIds: [${productID}]) { edges{ node{ id, entityId, name, description, sku, inventory {isInStock}, createdAt {utc} prices { price { value, currencyCode } } defaultImage { url(width:1280) } } } } } }`)
             .then((data) => {
@@ -43,9 +43,9 @@ export default class CustomCategory extends PageManager {
     }
 
     /**
-     *
-     *
-     */
+    *
+    *
+    */
     onChange(e) {
         const $input = $(e.target);
         nod().configure({
@@ -75,9 +75,9 @@ export default class CustomCategory extends PageManager {
     };
 
     /**
-     *
-     *
-     */
+    *
+    *
+    */
     amountProduct(data) {
         data.site.products.forEach(el => {
             el.count = 0;
@@ -91,10 +91,10 @@ export default class CustomCategory extends PageManager {
     }
 
     /**
-     *
-     *
-     *
-     */
+    *
+    *
+    *
+    */
     sum(products) {
         let priceArr = [];
         products.forEach(el=> {
@@ -107,10 +107,10 @@ export default class CustomCategory extends PageManager {
     }
 
     /**
-     *
-     *
-     *
-     */
+    *
+    *
+    *
+    */
     async customAddToCartButton () {
         for(const product of this.products) {
             this.$overlay.show();
