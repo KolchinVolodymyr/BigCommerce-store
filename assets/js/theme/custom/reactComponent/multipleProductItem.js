@@ -7,6 +7,7 @@ export default class MultipleProductItem extends React.Component {
         this.state = {
             total: 0,
             variants: [],
+            disabled: true
         }
     }
 
@@ -16,6 +17,7 @@ export default class MultipleProductItem extends React.Component {
      * @param variantProductPrice
      */
     changeTotal(variantProductID, variantProductPrice) {
+        this.setState({disabled: false});
         let variantIndex = this.state.variants.findIndex((el) => el.id == variantProductID);
         // -1, not found
         if (variantIndex !== -1) {
@@ -43,7 +45,7 @@ export default class MultipleProductItem extends React.Component {
                     })
                 }
                 <div className="total">
-                    <button id="productVariants" className="button button--primary">Add to Cart</button>
+                    <button id="productVariants" className="button button--primary" disabled={this.state.disabled}>Add to Cart</button>
                     <div className="total-price">
                         <span>Total price: </span>
                         <span id="totalPriceValue">{this.state.total}</span>

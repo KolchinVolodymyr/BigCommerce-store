@@ -6,3 +6,4 @@ export default function (token) {
         headers: { Authorization: `Bearer ${token}` },
         cache: new InMemoryCache(),
     });
+}
