@@ -5,34 +5,31 @@ query CategoryByUrl {
         id
         ... on Category {
           name
-          entityId
-          description
           products {
             edges {
               node {
                 id
                 entityId
                 name
+                description
+                inventory {
+                    aggregated {
+                        availableToSell
+                    }
+                }
+                productOptions {
+                    edges {
+                        node {
+                            entityId
+                        }
+                    }
+                }
                 defaultImage {
                   url(width: 1200)
-                }
-                brand {
-                  name
-                  defaultImage {
-                    url(width: 200)
-                  }
                 }
                 prices {
                   price {
                     ...PriceFields
-                  }
-                  priceRange {
-                    min {
-                      ...PriceFields
-                    }
-                    max {
-                      ...PriceFields
-                    }
                   }
                 }
               }

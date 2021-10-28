@@ -25,7 +25,6 @@ export default class CustomCategory extends PageManager {
         this.preTotal = 0;
         this.currencyCode = null;
         this.products = [];
-        this.stock_level = null;
         this.gqlClient = initApolloClient(this.context.storefrontAPIToken);
         this.$addToCartBtnAbove = $('#addToCart-above');
         this.$addToCartBtnBelow = $('#addToCart-below');
@@ -36,65 +35,30 @@ export default class CustomCategory extends PageManager {
     }
 
     /**
-    *
-    *
+    * Get all products from a category
     */
-    getProduct(productID) {
-        //console.log('this.context', this.context);
-        console.log('productId',  productID);
-        console.log('this,gqlClient', this.gqlClient);
+    getProduct() {
         return this.gqlClient
             .query({
                 query: productCategory,
-                variables: { productId: productID },
             }).then((data) => {
                 let newData = flattenGraphQLResponse(data);
-                console.log('newData22', newData);
+                this.products = newData.data.site.route.node.products.filter(el => el.productOptions.length === 0);
+                this.currencyCode = this.products[0]?.prices.price.currencyCode
+                ReactDOM.render(<ProductItem data={this.products} onChange={this.onChange.bind(this)}/>, this.$container);
+                this.amountProduct(this.products);
+                ReactDOM.render(<ProductTotal total={this.total} currencyCode={this.currencyCode}/>, this.$totalContainer);
             });
-
-        // return this.gqlClient
-        //     .query({
-        //         query:  gql`
-        //             query getProductsIds {
-        //                 site {
-        //                     ${productID.reduce((query, product, index) => query + `
-        //                         product${index}: product (sku: "${product.sku}") {
-        //                             entityId
-        //                         }
-        //                     `, '')}
-        //                 }
-        //             }
-        //         `,
-        //         fetchPolicy: 'no-cache'
-        //     }).then((data) => {
-        //                 let newData = flattenGraphQLResponse(data);
-        //                 console.log('newData22', newData);
-        //             });
-
-        // get (`{site { products(entityIds: [${productID}]) { edges {node {id,entityId,name,description, sku, productOptions {
-        //         edges { node { entityId displayName
-        //             ... on MultipleChoiceOption { displayStyle values { edges { node { entityId label } } } } } } }
-        //     variants(first: 100) { edges { node { sku prices { price { value currencyCode } } } } }
-        //     inventory { aggregated { availableToSell } } prices { price { value, currencyCode } } defaultImage { url(width:1280)}}}}}}`)
-        //     .then((data) => {
-        //         this.products = data.site.products.filter(el => el.productOptions.length === 0);
-        //         ReactDOM.render(<ProductItem data={this.products} onChange={this.onChange.bind(this)}/>, this.$container);
-        //         this.amountProduct(this.products);
-        //         ReactDOM.render(<ProductTotal total={this.total} currencyCode={this.currencyCode}/>, this.$totalContainer);
-        //     })
     }
 
     /**
-    *
-    *
+    * Event Listener input
     */
     onChange(e) {
         const $input = $(e.target);
-        this.Nod.add([{
-            // Raw dom element
+        this.Nod.add([
+        {
             selector: $input,
-            // Custom function. Notice that a call back is used. This means it should
-            // work just fine with ajax requests (is user name already in use?).
             validate: function (callback, value) {
                 if(!isNaN(value) && value<10) {
                     if(this.total == 0) {
@@ -117,9 +81,10 @@ export default class CustomCategory extends PageManager {
                     this.$addToCartBtnAbove.prop('disabled', true);
                     this.$addToCartBtnBelow.prop('disabled', true);
                 }
-            }.bind(this),
-            errorMessage: this.context.errorStockOn
-        },{
+          }.bind(this),
+            errorMessage: this.context.enterValidData
+        },
+        {
             selector: $input,
             validate: function (callback, value) {
                 if(this.total == 0) {
@@ -153,8 +118,7 @@ export default class CustomCategory extends PageManager {
     };
 
     /**
-    *
-    *
+    * The amount of product on the page
     */
     amountProduct(data) {
         data.forEach(el => {
@@ -169,9 +133,7 @@ export default class CustomCategory extends PageManager {
     }
 
     /**
-    *
-    *
-    *
+    * The total the page
     */
     sum(products) {
         let priceArr = [];
@@ -188,9 +150,7 @@ export default class CustomCategory extends PageManager {
     }
 
     /**
-    *
-    *
-    *
+    *  Add to cart
     */
     async customAddToCartButton () {
         if (this.Nod.areAll('valid')) {
@@ -199,20 +159,20 @@ export default class CustomCategory extends PageManager {
                 for (const product of this.products) {
                     if(product.count !==0) {
                          await this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, {
-                                "lineItems": [{
-                                    "quantity": product.count,
-                                    "productId": product.entityId
-                                }]
+                            "lineItems": [{
+                                "quantity": product.count,
+                                "productId": product.entityId
+                            }]
                          })
                     }
                 }
                 this.$overlay.hide();
                 window.location = '/cart.php';
             } else {
-                showAlertModal('Cart is empty, add product to cart ');
+                showAlertModal(this.context.cartEmpty);
             }
         } else {
-            showAlertModal('Enter valid data (0-10)');
+            showAlertModal(this.context.enterValidData);
         }
     }
 
@@ -249,16 +209,9 @@ export default class CustomCategory extends PageManager {
     };
 
     onReady() {
-    //console.log('this', this.context);
         this.$addToCartBtnAbove.prop('disabled', true);
         this.$addToCartBtnBelow.prop('disabled', true);
         this.getCart(`/api/storefront/carts`);
-
-        this.context.products.forEach(element => {
-            this.productsId.push(element.id);
-            //this.stock_level = element.stock_level;
-            this.currencyCode = element.price.without_tax.currency;
-        });
-        this.getProduct(this.productsId);
+        this.getProduct();
     }
 }
