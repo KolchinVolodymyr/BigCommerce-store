@@ -805,7 +805,8 @@
             "fixed": "and pay only {discount} each"
         },
         "card_default_image_alt": "Image coming soon",
-        "error_message_stock" : "Available quantity"
+        "error_message_stock" : "Available quantity",
+        "please_quantity": "Please set the quantity of variants no greater than available"
     },
     "invoice": {
         "for_order": "{name} Invoice for Order #{id}",

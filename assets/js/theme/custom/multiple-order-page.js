@@ -6,6 +6,7 @@ import initApolloClient from '../global/graphql/client';
 import flattenGraphQLResponse from 'humanize-graphql-response';
 import customProductOptions from './gql/productOption.gql';
 import MultipleProductItem from './reactComponent/multipleProductItem';
+import swal from '../global/sweet-alert';
 
 export default class CustomDemo extends PageManager {
     constructor(context) {
@@ -52,7 +53,14 @@ export default class CustomDemo extends PageManager {
                 cartItems.push(lineItem);
             }
         }
-        this.createCart(cartItems);
+        if(cartItems.length == 0) {
+            return swal.fire({
+                    text: this.context.pleaseSetTheQuantity,
+                    icon: 'error',
+                });
+        } else {
+            this.createCart(cartItems);
+        }
     }
 
 
