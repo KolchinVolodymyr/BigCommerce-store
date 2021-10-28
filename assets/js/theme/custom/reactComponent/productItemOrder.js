@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ProductItem({data, onChange, checkParams}) {
+export default function ProductItem({data, onChange}) {
     return (
         <div className="containerCustom">
-            {data.site.products.map(el => {
+            {data.map(el => {
                 return (
                     <div key={el.id} className="item">
                         <div className="item-col-1">
@@ -16,23 +16,6 @@ export default function ProductItem({data, onChange, checkParams}) {
                         <div className="item-col-2">
                             <div className="price">
                                 {el.prices.price.value} {el.prices.price.currencyCode}
-                            </div>
-                            <div className="productOption">
-                                {el.productOptions.map((i, indexOptions)=> {
-                                    return (
-                                        <div key={indexOptions}>
-                                        <div>{i.displayName}</div>
-                                            <select id={i.entityId} className="form-select form-select--small">
-                                            {i.values.map((a, indexLabel)=>{
-                                                return (
-                                                        <option value={a.entityId} key={indexLabel} >{a.label}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                    )
-                                })
-                                }
                             </div>
                         </div>
                         <div className="item-col-3">

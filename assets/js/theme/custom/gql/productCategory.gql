@@ -1,56 +1,48 @@
-query getCustomProductCategory(
-        $productId: Int!,
-        $pageSize: Int,
-        $cursor: String,
-    ) {
-        site {
-            products(entityIds: $productId) {
-                edges {
-                    node {
-                        id,
-                        entityId,
-                        name,
-                        description,
-                        sku,
-                        productOptions {
-                            edges {
-                                node {
-                                entityId
-                                displayName
-                                    ... on MultipleChoiceOption {
-                                    displayStyle
-                                    values {
-                                        edges {
-                                            node {
-                                                entityId
-                                                label
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    variants(first: 100) {
-                        edges {
-                            node {
-                                sku
-                                prices {
-                                    price { value currencyCode }
-                                }
-                            }
-                        }
-                    }
-                    inventory {
-                        aggregated { availableToSell }
-                    } prices {
-                        price { value, currencyCode }
-                    }
-                    defaultImage {
-                            url(width:1280)
-                        }
-                    }
+query CategoryByUrl {
+  site {
+    route(path: "/custom-category/") {
+      node {
+        id
+        ... on Category {
+          name
+          entityId
+          description
+          products {
+            edges {
+              node {
+                name
+                defaultImage {
+                  url(width: 1200)
                 }
+                brand {
+                  name
+                  defaultImage {
+                    url(width: 200)
+                  }
+                }
+                prices {
+                  price {
+                    ...PriceFields
+                  }
+                  priceRange {
+                    min {
+                      ...PriceFields
+                    }
+                    max {
+                      ...PriceFields
+                    }
+                  }
+                }
+              }
             }
+          }
         }
+      }
     }
+  }
+}
+
+fragment PriceFields on Money {
+  value
+  currencyCode
+}
