@@ -55,64 +55,26 @@ export default class CustomCategory extends PageManager {
     * Event Listener input
     */
     onChange(e) {
+        this.Nod.configure({ submit: '.submitBtn', disableSubmit: true });
         const $input = $(e.target);
-        this.Nod.add([
-        {
-            selector: $input,
-            validate: function (callback, value) {
-                if(!isNaN(value) && value<10) {
-                    if(this.total == 0) {
-                        callback(true);
-                        this.$addToCartBtnAbove.prop('disabled', true);
-                        this.$addToCartBtnBelow.prop('disabled', true);
-                    } else {
-                        if(isNaN(this.preTotal)) {
-                            callback(true);
-                            this.$addToCartBtnAbove.prop('disabled', true);
-                            this.$addToCartBtnBelow.prop('disabled', true);
-                        } else {
-                            callback(true);
-                            this.$addToCartBtnAbove.prop('disabled', false);
-                            this.$addToCartBtnBelow.prop('disabled', false);
-                        }
-                    }
-                } else {
-                    callback(false);
-                    this.$addToCartBtnAbove.prop('disabled', true);
-                    this.$addToCartBtnBelow.prop('disabled', true);
-                }
-          }.bind(this),
-            errorMessage: this.context.enterValidData
-        },
-        {
-            selector: $input,
-            validate: function (callback, value) {
-                if(this.total == 0) {
-                    callback(true);
-                    this.$addToCartBtnAbove.prop('disabled', true);
-                    this.$addToCartBtnBelow.prop('disabled', true);
-                } else {
-                    if($input.context.dataset?.productStock == undefined) {
-                        callback(true);
-                    } else {
-                        if(value <=  $input.context.dataset?.productStock) {
-                            callback(true);
-                            if( $('.form-field--error').length >= 1 ){
-                                this.$addToCartBtnAbove.prop('disabled', true);
-                                this.$addToCartBtnBelow.prop('disabled', true);
-                            } else {
-                                this.$addToCartBtnAbove.prop('disabled', false);
-                                this.$addToCartBtnBelow.prop('disabled', false);
-                            }
-                        } else {
-                            callback(false);
-                            this.$addToCartBtnAbove.prop('disabled', true);
-                            this.$addToCartBtnBelow.prop('disabled', true);
-                        }
-                    }
-                }
-            }.bind(this),
-            errorMessage: `${this.context.errorStockOn} ${$input.context.dataset.productStock}`
+
+        if($input.context.dataset?.productStock !== undefined) {
+            this.Nod.add([{
+                  selector: $input,
+                  validate: `max-number:${$input.context.dataset?.productStock}`,
+                  errorMessage: `${this.context.errorStockOn} ${$input.context.dataset.productStock}`
+              },
+              {
+                selector:$input,
+                validate: 'min-number:0',
+                errorMessage: this.context.enterValidData
+              }])
+        }
+
+        this.Nod.add([{
+             selector: $input,
+             validate: "between-number:0:10",
+             errorMessage: this.context.enterValidData
         }]);
         this.Nod.performCheck();
     };
@@ -209,8 +171,8 @@ export default class CustomCategory extends PageManager {
     };
 
     onReady() {
-        this.$addToCartBtnAbove.prop('disabled', true);
-        this.$addToCartBtnBelow.prop('disabled', true);
+//        this.$addToCartBtnAbove.prop('disabled', true);
+//        this.$addToCartBtnBelow.prop('disabled', true);
         this.getCart(`/api/storefront/carts`);
         this.getProduct();
     }
