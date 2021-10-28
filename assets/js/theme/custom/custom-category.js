@@ -171,8 +171,6 @@ export default class CustomCategory extends PageManager {
     };
 
     onReady() {
-//        this.$addToCartBtnAbove.prop('disabled', true);
-//        this.$addToCartBtnBelow.prop('disabled', true);
         this.getCart(`/api/storefront/carts`);
         this.getProduct();
     }
