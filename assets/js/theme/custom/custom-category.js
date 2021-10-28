@@ -7,11 +7,7 @@ import ReactDOM from 'react-dom';
 import ProductItem from './reactComponent/productItemOrder';
 import ProductTotal from "./reactComponent/productOrderTotal";
 import { showAlertModal } from '../global/modal';
-import nod from "nod-validate";
-import initApolloClient from '../global/graphql/client';
-import flattenGraphQLResponse from 'humanize-graphql-response';
-import productCategory from './gql/productCategory.gql';
-import { gql } from '@apollo/client';
+
 
 export default class CustomCategory extends PageManager {
     constructor(context) {
@@ -22,37 +18,32 @@ export default class CustomCategory extends PageManager {
         this.$totalContainer = $('#total')[0];
         this.$input = $('.form-input-order');
         this.total = 0;
-        this.preTotal = 0;
         this.currencyCode = null;
         this.products = [];
-        this.gqlClient = initApolloClient(this.context.storefrontAPIToken);
         this.$addToCartBtnAbove = $('#addToCart-above');
         this.$addToCartBtnBelow = $('#addToCart-below');
         this.$addToCartBtnAbove.on('click', () => this.customAddToCartButton());
         this.$addToCartBtnBelow.on('click', () => this.customAddToCartButton());
-        this.Nod = nod();
-        this.cartItemsID = '';
     }
 
     /**
-    * Get all products from a category
-    */
-    getProduct() {
-        return this.gqlClient
-            .query({
-                query: productCategory,
-            }).then((data) => {
-                let newData = flattenGraphQLResponse(data);
-                this.products = newData.data.site.route.node.products.filter(el => el.productOptions.length === 0);
-                this.currencyCode = this.products[0]?.prices.price.currencyCode
-                ReactDOM.render(<ProductItem data={this.products} onChange={this.onChange.bind(this)}/>, this.$container);
-                this.amountProduct(this.products);
+     *
+     *
+     */
+    getProduct(productID) {
+        get (`{site { products(entityIds: [${productID}]) { edges{ node{ id, entityId, name, description, sku, inventory {isInStock}, createdAt {utc} prices { price { value, currencyCode } } defaultImage { url(width:1280) } } } } } }`)
+            .then((data) => {
+                this.$addToCartBtnAbove.prop('disabled', true);
+                this.$addToCartBtnBelow.prop('disabled', true);
+                this.products = data.site.products;
+                ReactDOM.render(<ProductItem data={data} onChange={this.onChange}/>, this.$container);
+                this.amountProduct(data);
                 ReactDOM.render(<ProductTotal total={this.total} currencyCode={this.currencyCode}/>, this.$totalContainer);
-            });
-    }
 
+    });
+}
     /**
-    * Event Listener input
+    *
     */
     onChange(e) {
         const $input = $(e.target);
