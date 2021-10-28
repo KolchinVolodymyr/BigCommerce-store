@@ -229,7 +229,11 @@
         "filter_select_announcement": "The filter has been applied",
         "view_all": {
             "name": "All {category}"
-        }
+        },
+        "error_stock_on": "We dont have enough stock on. Available quantity",
+        "valid_product_quantity": "Please enter a valid product quantity(from 0 to 10)",
+        "cart_empty": "Cart is empty, add product to cart",
+        "enter_valid_data": "Enter valid data (0-10)"
     },
     "brand": {
         "label": "Brands",
