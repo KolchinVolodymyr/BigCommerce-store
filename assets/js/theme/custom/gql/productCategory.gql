@@ -10,6 +10,8 @@ query CategoryByUrl {
           products {
             edges {
               node {
+                id
+                entityId
                 name
                 defaultImage {
                   url(width: 1200)
