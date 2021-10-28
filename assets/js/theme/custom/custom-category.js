@@ -6,8 +6,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ProductItem from './reactComponent/productItemOrder';
 import ProductTotal from "./reactComponent/productOrderTotal";
-import nod from "nod-validate";
 import { showAlertModal } from '../global/modal';
+import nod from "nod-validate";
+import initApolloClient from '../global/graphql/client';
+import flattenGraphQLResponse from 'humanize-graphql-response';
+import productCategory from './gql/productCategory.gql';
+import { gql } from '@apollo/client';
 
 export default class CustomCategory extends PageManager {
     constructor(context) {
@@ -18,126 +22,156 @@ export default class CustomCategory extends PageManager {
         this.$totalContainer = $('#total')[0];
         this.$input = $('.form-input-order');
         this.total = 0;
+        this.preTotal = 0;
         this.currencyCode = null;
         this.products = [];
+        this.gqlClient = initApolloClient(this.context.storefrontAPIToken);
         this.$addToCartBtnAbove = $('#addToCart-above');
         this.$addToCartBtnBelow = $('#addToCart-below');
         this.$addToCartBtnAbove.on('click', () => this.customAddToCartButton());
         this.$addToCartBtnBelow.on('click', () => this.customAddToCartButton());
+        this.Nod = nod();
+        this.cartItemsID = '';
     }
 
     /**
-    *
-    *
+    * Get all products from a category
     */
-    getProduct(productID) {
-        get (`{site { products(entityIds: [${productID}]) { edges{ node{ id, entityId, name, description, sku, inventory {isInStock}, createdAt {utc} prices { price { value, currencyCode } } defaultImage { url(width:1280) } } } } } }`)
-            .then((data) => {
-                this.$addToCartBtnAbove.prop('disabled', true);
-                this.$addToCartBtnBelow.prop('disabled', true);
-                this.products = data.site.products;
-                ReactDOM.render(<ProductItem data={data} onChange={this.onChange}/>, this.$container);
-                this.amountProduct(data);
+    getProduct() {
+        return this.gqlClient
+            .query({
+                query: productCategory,
+            }).then((data) => {
+                let newData = flattenGraphQLResponse(data);
+                this.products = newData.data.site.route.node.products.filter(el => el.productOptions.length === 0);
+                this.currencyCode = this.products[0]?.prices.price.currencyCode
+                ReactDOM.render(<ProductItem data={this.products} onChange={this.onChange.bind(this)}/>, this.$container);
+                this.amountProduct(this.products);
                 ReactDOM.render(<ProductTotal total={this.total} currencyCode={this.currencyCode}/>, this.$totalContainer);
             });
     }
 
     /**
-    *
-    *
+    * Event Listener input
     */
     onChange(e) {
+        this.Nod.configure({ submit: '.submitBtn', disableSubmit: true });
         const $input = $(e.target);
-        nod().configure({
-            submit: 'button--primary',
-            disableSubmit: true
-        });
-        nod().add([{
-            // Raw dom element
-            selector: $input,
-            // Custom function. Notice that a call back is used. This means it should
-            // work just fine with ajax requests (is user name already in use?).
-            validate: function (callback, value) {
-                if(!isNaN(value) && value<=10) {
-                    $input.removeClass("form-field--error");
-                    callback(true);
-                    $('#addToCart-above')[0].removeAttribute("disabled");
-                    $('#addToCart-below')[0].removeAttribute("disabled");
-                } else {
-                    $input.addClass("form-field--error");
-                    callback(false);
-                    $('#addToCart-above')[0].setAttribute("disabled", "");
-                    $('#addToCart-below')[0].setAttribute("disabled", "");
-                }
-            },
-            errorMessage: 'Please enter a valid product quantity(from 0 to 10)'
+
+        if($input.context.dataset?.productStock !== undefined) {
+            this.Nod.add([{
+                  selector: $input,
+                  validate: `max-number:${$input.context.dataset?.productStock}`,
+                  errorMessage: `${this.context.errorStockOn} ${$input.context.dataset.productStock}`
+              },
+              {
+                selector:$input,
+                validate: 'min-number:0',
+                errorMessage: this.context.enterValidData
+              }])
+        }
+
+        this.Nod.add([{
+             selector: $input,
+             validate: "between-number:0:10",
+             errorMessage: this.context.enterValidData
         }]);
+        this.Nod.performCheck();
     };
 
     /**
-    *
-    *
+    * The amount of product on the page
     */
     amountProduct(data) {
-        data.site.products.forEach(el => {
+        data.forEach(el => {
             el.count = 0;
-            document.getElementById(`${el.entityId}`).addEventListener("input", function(e) {
+            document.getElementById(`${el.entityId}`).addEventListener("input", function() {
                 el.count = document.getElementById(`${el.entityId}`).value;
                 el.sumProduct = el.count*el.prices.price.value;
-                this.sum(data.site.products);
+                this.sum(data);
             }.bind(this));
             el.sumProduct = el.count*el.prices.price.value;
         });
     }
 
     /**
-    *
-    *
-    *
+    * The total the page
     */
     sum(products) {
         let priceArr = [];
+        let arr = [];
         products.forEach(el=> {
+            arr.push(el.sumProduct);
             if(!isNaN(el.sumProduct)) {
                 priceArr.push(el.sumProduct);
             }
         });
-        this.total = priceArr.reduce((previousValue, currentValue) => {return previousValue + currentValue}, 0);
+        this.total = priceArr.reduce((previousValue, currentValue) => {return previousValue + currentValue}, 0).toFixed(2);
+        this.preTotal = arr.reduce((previousValue, currentValue) => {return previousValue + currentValue}, 0);
         ReactDOM.render(<ProductTotal total={this.total} currencyCode={this.currencyCode}/>, this.$totalContainer);
     }
 
     /**
-    *
-    *
-    *
+    *  Add to cart
     */
     async customAddToCartButton () {
-        for(const product of this.products) {
-            this.$overlay.show();
-            await fetch(`/cart.php?action=add&product_id=${product.entityId}&qty=${product.count}`)
-                .then((res) => {
-                    if (res.status >= 200 && res.status < 300) {
-                        return res;
-                    } else {
-                        let error = new Error(res.statusText);
-                        error.response = res;
-                        throw error
+        if (this.Nod.areAll('valid')) {
+            if (this.total !== 0) {
+                this.$overlay.show();
+                for (const product of this.products) {
+                    if(product.count !==0) {
+                         await this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, {
+                            "lineItems": [{
+                                "quantity": product.count,
+                                "productId": product.entityId
+                            }]
+                         })
                     }
-                })
-                .catch(error => showAlertModal(error))
-                .finally(() => {
-                    this.$overlay.hide();
-                });
+                }
+                this.$overlay.hide();
+                window.location = '/cart.php';
+            } else {
+                showAlertModal(this.context.cartEmpty);
+            }
+        } else {
+            showAlertModal(this.context.enterValidData);
         }
-        // go to cart.
-        window.location = "/cart.php";
     }
 
+    /**
+     * Returns a Cart
+     */
+    getCart(url) {
+        return fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(cart => {
+            this.cartItemsID = cart[0]?.id
+        })
+        .catch(error => console.error(error));
+    }
+    /**
+     * Creates a Cart
+     */
+    createCartItems(url, cartItems) {
+        return fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(cartItems),
+        }).then(response => response.json())
+          .then((cart) => {this.cartItemsID = cart?.id})
+    };
+
     onReady() {
-        this.context.products.forEach(element => {
-            this.productsId.push(element.id);
-            this.currencyCode = element.price.without_tax.currency;
-        });
-        this.getProduct(this.productsId);
+        this.getCart(`/api/storefront/carts`);
+        this.getProduct();
     }
 }
