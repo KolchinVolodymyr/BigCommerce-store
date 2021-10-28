@@ -1,0 +1,30 @@
+query WidgetQueries {
+  site {
+    newestProducts(first: 10) {
+      edges {
+      	node {
+        	id
+          entityId
+          path
+          name
+          createdAt{utc}
+          defaultImage {
+            url(width: 320)
+          }
+          prices {
+            salePrice {
+              value
+            }
+            basePrice {
+              value
+            }
+          }
+          brand {
+            name
+          }
+        }
+      }
+    }
+  }
+}
+

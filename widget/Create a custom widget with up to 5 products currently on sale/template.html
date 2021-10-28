@@ -1,0 +1,43 @@
+<!-- DO NOT DELETE
+    Access GraphQL query data with {{_.data}}
+    Access the widget id with {{_.id}}
+-->
+<h2 class="page-heading page-heading-widget">{{ heading }}</h2>
+<ul class="productGrid productGrid--maxCol4">
+    {{assignVar "count" 0}}
+        {{#each _.data.site.newestProducts.edges}}
+            {{#if node.prices.salePrice '!=' null}}
+                {{#if (moment diff=node.createdAt.utc) '<' 864000000}}
+                    {{incrementVar "count"}}
+                    {{#if (getVar "count") '<' 6}}
+                    <li class="product productWidth productWidget">
+                        <article class="card">
+                            <figure class="card-figure">
+                                <a href={{node.path}}>
+                                    <div class="card-img-container" style="height: 200px">
+                                        <img src="{{#if node.defaultImage '==' null}} https://cdn11.bigcommerce.com/s-d1y3ufri1f/stencil/bda89a40-08d3-013a-d44b-16c805b73009/img/ProductDefault.gif {{else}} {{node.defaultImage.url}} {{/if}}"
+                                             data-sizes="auto" class="listItem-image lazyautosizes lazyloaded" sizes="192px">
+                                    </div>
+                                </a>
+                            </figure>
+                        </article>
+                        <div class="card-body">
+                            <p class="card-text" data-test-info-type="brandName">{{node.brand.name}}</p>
+                            <h3 class="card-title">
+                                <a href={{node.path}}>
+                                    {{node.name}}
+                                </a>
+                            </h3>
+                            <div class="card-text" data-test-info-type="price" style="text-decoration: line-through;">
+                                Was: ₴{{node.prices.basePrice.value}}
+                            </div>
+                            <div class="card-text" data-test-info-type="price">
+                                Now: ₴{{node.prices.salePrice.value}}
+                            </div>
+                        </div>
+                    </li>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+        {{/each}}
+</ul>
