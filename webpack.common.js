@@ -38,6 +38,15 @@ module.exports = {
                 },
             },
             {
+                test: /\.(graphql|gql)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'graphql-tag/loader'
+                    },
+                ]
+            },
+            {
                 test: require.resolve('jquery'),
                 use: [{
                     loader: 'expose-loader',

@@ -1,0 +1,47 @@
+query CategoryByUrl {
+  site {
+    route(path: "/custom-category/") {
+      node {
+        id
+        ... on Category {
+          name
+          products {
+            edges {
+              node {
+                id
+                entityId
+                name
+                description
+                inventory {
+                    aggregated {
+                        availableToSell
+                    }
+                }
+                productOptions {
+                    edges {
+                        node {
+                            entityId
+                        }
+                    }
+                }
+                defaultImage {
+                  url(width: 1200)
+                }
+                prices {
+                  price {
+                    ...PriceFields
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment PriceFields on Money {
+  value
+  currencyCode
+}
