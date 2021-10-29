@@ -1,0 +1,13 @@
+query customerData {
+  customer {
+    firstName
+    entityId
+    attributes {
+      paymentMethodLabel: attribute(entityId: 2) {
+        entityId
+        value
+        name
+      }
+    }
+  }
+}
