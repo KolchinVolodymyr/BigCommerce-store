@@ -10,10 +10,7 @@ export default class CustomCheckout extends PageManager {
 
         const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
         this.observer = new MutationObserver((this.callback).bind(this));
-        this.observer.observe(window.document.body, {
-            childList: true,
-            subtree: true,
-        });
+        this.observer.observe(window.document.body, {childList: true, subtree: true});
     }
     callback (changes, observer) {
         console.log(changes);
