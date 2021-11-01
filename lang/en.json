@@ -694,6 +694,10 @@
         }
     },
     "products": {
+        "new_bange": "New",
+        "on_sale": "On sale",
+        "closeout": "Closeout",
+        "free_shipping": "Free Shipping",
         "none": "None",
         "gift_option": "Choose gift option",
         "send_congratulation_inscription_email": "Send a congratulation inscription via email",

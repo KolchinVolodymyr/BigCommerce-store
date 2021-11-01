@@ -28,23 +28,23 @@
             {{#each category}}
                 {{#if this '==' 'Closeout'}}
                     <div class="bange__closeout">
-                        <div class="icons">{{this}}</div>
+                        <div class="icons">{{lang 'products.closeout'}}</div>
                     </div>
                 {{/if}}
                 {{#if this '==' 'Free shipping'}}
                     <div class="bange__free-shipping">
-                        <div class="icons">{{this}}</div>
+                        <div class="icons">{{lang 'products.free_shipping'}}</div>
                     </div>
                 {{/if}}
             {{/each}}
             {{#if (moment unix=true) "<=" (moment (moment date_added add="2419200000") unix=true)}}
                 <div class="bange__new">
-                    <div class="icons">New</div>
+                    <div class="icons">{{lang 'products.new_bange'}}</div>
                 </div>
             {{/if}}
             {{#if price.non_sale_price_without_tax}}
                 <div class="bange__price">
-                    <div class="icons">Price</div>
+                    <div class="icons">{{lang 'products.on_sale'}}</div>
                 </div>
             {{/if}}
         </div>

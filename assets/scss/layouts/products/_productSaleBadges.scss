@@ -201,7 +201,7 @@
     .bange__closeout {
         position: absolute;
         width: 100%;
-        background: #fff;
+        background: $white;
         height: 20px;
         z-index: 4;
          .icons {
@@ -213,7 +213,7 @@
         position: absolute;
         width: 100%;
         height: 20px;
-        background: #fff;
+        background: $white;
         z-index: 3;
         .icons {
             @extend %base-flag-side;
@@ -224,7 +224,7 @@
         position: absolute;
         width: 100%;
         height: 20px;
-        background: #fff;
+        background: $white;
         height: 20px;
         z-index: 2;
         .icons {
@@ -236,7 +236,7 @@
         position: absolute;
         width: 100%;
         height: 20px;
-        background: #fff;
+        background: $white;
         height: 20px;
         z-index: 1;
         .icons {
