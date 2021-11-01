@@ -18,6 +18,9 @@ export default class CustomProductEngraving extends PageManager {
         this.cartItemsID = '';
         this.inputAddEngraving = document.getElementById('inputAddEngraving');
         this.Nod = nod();
+        this.$form = $('form[data-cart-item-add]');
+        this.productOption = '';
+        this.lineItems = null;
         this.Nod.configure({submit:document.getElementById('form-action-addToCart'), disableSubmit: true});
     }
     onReady() {
@@ -89,24 +92,51 @@ export default class CustomProductEngraving extends PageManager {
             /*Add event Listener*/
             document.querySelector('#form-action-addToCart').addEventListener('click', function(e){
                 e.preventDefault();
+                this.getOptionsProduct();
+
                 if (this.Nod.getStatus([this.$productInput]) == 'invalid') {
                     e.preventDefault();
                 } else {
-                    this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `/${this.cartItemsID}/item` : ''}`, {
-                        "lineItems": [{
-                            "quantity": this.productCount,
-                            "productId": this.productId,
-                            "optionSelections": [
-                                {"optionId": this.EngravingLengthID, "optionValue": this.optionValueID},
-                                {"optionId": this.EngravingID, "optionValue": `${this.productInputTextValue}`}
-                            ]
-                        }]
-                    })
+                    this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `/${this.cartItemsID}/item` : ''}`, this.lineItems)
                     .then(()=> {window.location = '/cart.php'})
                 }
             }.bind(this));
     }
 
+    /**
+     * Get option product
+     */
+    getOptionsProduct(){
+        let optionsString = "";
+        let optionProduct = this.$form.serialize()
+            .split("&")
+            .filter((str)=>{return str.includes("attribute")})
+            .map((i)=>{return i.replace('attribute%5B', '').replaceAll('%20', ' ').split('%5D=')})
+
+        optionProduct.forEach(element => {
+            if (optionsString.length == 0) {
+                optionsString = `{"option_id": ${element[0]}, "optionValue": "${element[1]}"}`
+            } else {
+                optionsString = optionsString + ", " + `{"option_id": ${element[0]}, "optionValue": "${element[1]}"}`;
+            }
+        })
+        this.optionsString = optionsString;
+        this.createLineItem();
+    }
+
+    /**
+     * Create Line cart a Cart
+     */
+    createLineItem () {
+        let itemQuantity = document.getElementById('qty[]').value;
+        this.lineItems = `{"lineItems":[{
+                    "productId": ${this.productId}, 
+                    "quantity": ${itemQuantity}, 
+                    "option_selections": [ 
+                        ${this.optionsString}
+                    ]}
+                ]}`;
+    }
 
     /**
     * Returns a Cart
@@ -135,7 +165,7 @@ export default class CustomProductEngraving extends PageManager {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(cartItems),
+            body: cartItems,
         })
         .then(response => response.json());
     };
