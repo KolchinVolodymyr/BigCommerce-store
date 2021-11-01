@@ -24,37 +24,30 @@
         {{/if}}"
     {{/if}}>
     <figure class="card-figure">
-        {{#if stock_level '===' 0}}
-            {{#if theme_settings.pdp_sold_out_label '===' ''}}
-                {{> components/products/product-badge
-                    badge-type='sold-out'
-                    badge_view=theme_settings.product_sold_out_badges
-                    badge_label=(lang "page_builder.pdp_sold_out_label")
-                }}
-            {{else}}
-                {{> components/products/product-badge
-                    badge-type='sold-out'
-                    badge_view=theme_settings.product_sold_out_badges
-                    badge_label=theme_settings.pdp_sold_out_label
-                }}
-            {{/if}}
-        {{else}}
-            {{#or price.sale_price_with_tax.value price.sale_price_without_tax.value}}
-                {{#if theme_settings.pdp_sale_badge_label '===' ''}}
-                    {{> components/products/product-badge
-                        badge-type='sale'
-                        badge_view=theme_settings.product_sale_badges
-                        badge_label=(lang "page_builder.pdp_sale_badge_label")
-                    }}
-                {{else}}
-                    {{> components/products/product-badge
-                        badge-type='sale'
-                        badge_view=theme_settings.product_sale_badges
-                        badge_label=theme_settings.pdp_sale_badge_label
-                    }}
+        <div class="container-badges-position">
+            {{#each category}}
+                {{#if this '==' 'Closeout'}}
+                    <div class="bange__closeout">
+                        <div class="icons">{{this}}</div>
+                    </div>
                 {{/if}}
-            {{/or}}
-        {{/if}}
+                {{#if this '==' 'Free shipping'}}
+                    <div class="bange__free-shipping">
+                        <div class="icons">{{this}}</div>
+                    </div>
+                {{/if}}
+            {{/each}}
+            {{#if (moment unix=true) "<=" (moment (moment date_added add="2419200000") unix=true)}}
+                <div class="bange__new">
+                    <div class="icons">New</div>
+                </div>
+            {{/if}}
+            {{#if price.non_sale_price_without_tax}}
+                <div class="bange__price">
+                    <div class="icons">Price</div>
+                </div>
+            {{/if}}
+        </div>
         <a href="{{url}}"
            class="card-figure__link"
            aria-label="{{name}},{{> components/products/product-aria-label}}"
@@ -137,3 +130,4 @@
         {{> components/products/bulk-discount-rates}}
     </div>
 </article>
+
