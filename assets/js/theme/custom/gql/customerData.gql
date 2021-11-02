@@ -3,7 +3,7 @@ query customerData {
     firstName
     entityId
     attributes {
-      paymentMethodLabel: attribute(entityId: 2) {
+      paymentMethodLabel: attribute(entityId: 1) {
         entityId
         value
         name

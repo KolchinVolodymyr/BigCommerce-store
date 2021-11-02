@@ -7,27 +7,34 @@ export default class CustomCheckout extends PageManager {
     constructor(context) {
         super(context);
         this.gqlClient = initApolloClient(this.context.storefrontAPIToken);
+        this.paymentMethodLabel = false;
+        // const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+        // this.observer = new MutationObserver((this.callback).bind(this));
+        // this.observer.observe(window.document.body, {childList: true, subtree: true});
+    }
+    observe() {
+        let callback = function(changes){
+            changes.forEach(el => {
+                if (el.target.parentNode.classList.contains("checkout-step--payment") && el.addedNodes.length > 0) {
+                    if ($(".paymentProviderHeader-name").length > 0 && this.paymentMethodLabel) {
+                        $(".paymentProviderHeader-name").text(this.paymentMethodLabel);
+                    }
+                }
+            });
+        }
 
-        const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-        this.observer = new MutationObserver((this.callback).bind(this));
-        this.observer.observe(window.document.body, {childList: true, subtree: true});
+        //const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+        let observer = new MutationObserver(callback.bind(this));
+        observer.observe(window.document.body, {childList: true, subtree: true});
     }
-    callback (changes, observer) {
-        console.log(changes);
-        console.log(observer);
-    }
+
 
     onReady() {
-
-        console.log('this', this);
-
         this.gqlClient.query({
             query: customerData,
         }).then(res => {
-           //console.log('res', res);
-            const paymentMethodLabel = flattenGraphQLResponse(res)?.data?.customer?.attributes?.paymentMethodLabel?.value;
-            console.log('paymentMethodLabel', paymentMethodLabel);
-        })
-
+            this.paymentMethodLabel = flattenGraphQLResponse(res)?.data?.customer?.attributes?.paymentMethodLabel?.value;
+        }).catch(error => console.log(error))
+        this.observe()
     }
 }
