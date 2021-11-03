@@ -8,9 +8,6 @@ export default class CustomCheckout extends PageManager {
         super(context);
         this.gqlClient = initApolloClient(this.context.storefrontAPIToken);
         this.paymentMethodLabel = false;
-        // const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-        // this.observer = new MutationObserver((this.callback).bind(this));
-        // this.observer.observe(window.document.body, {childList: true, subtree: true});
     }
     observe() {
         let callback = function(changes){
@@ -22,8 +19,6 @@ export default class CustomCheckout extends PageManager {
                 }
             });
         }
-
-        //const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
         let observer = new MutationObserver(callback.bind(this));
         observer.observe(window.document.body, {childList: true, subtree: true});
     }
