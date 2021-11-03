@@ -17,6 +17,8 @@
     "focus-within-polyfill": "^5.1.0",
     "formdata-polyfill": "^3.0.20",
     "foundation-sites": "^5.5.3",
+    "graphql": "^16.0.0",
+    "graphql-tag": "^2.12.5",
     "graphql": "^15.6.1",
     "humanize-graphql-response": "^1.0.0",
     "jquery": "^3.5.1",
