@@ -95,7 +95,7 @@ export default class CustomProductEngraving extends PageManager {
                 if (this.Nod.getStatus([this.$productInput]) == 'invalid') {
                     e.preventDefault();
                 } else {
-                    this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `/${this.cartItemsID}/item` : ''}`, {
+                    this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, {
                         "lineItems": [{
                             "quantity": this.productCount,
                             "productId": this.productId,
