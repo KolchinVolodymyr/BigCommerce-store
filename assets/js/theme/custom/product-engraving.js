@@ -88,6 +88,9 @@ export default class CustomProductEngraving extends PageManager {
         this.getCart(`/api/storefront/carts`);
             /*Add event Listener*/
             document.querySelector('#form-action-addToCart').addEventListener('click', function(e){
+                if(this.productInputTextValueLength==null && document.querySelector('#addEngraving').checked) {
+                    return
+                }
                 e.preventDefault();
                 if (this.Nod.getStatus([this.$productInput]) == 'invalid') {
                     e.preventDefault();
