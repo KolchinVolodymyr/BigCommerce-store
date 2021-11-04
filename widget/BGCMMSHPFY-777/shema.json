@@ -1,6 +1,6 @@
-add metafields:
-Product Metafields: api query
-POST https://api.bigcommerce.com/stores/qe352b9ase/v3/catalog/products/103/metafields
+//add metafields:
+//Product Metafields: api query
+//POST https://api.bigcommerce.com/stores/qe352b9ase/v3/catalog/products/103/metafields
 {
 "permission_set": "app_only",
 "namespace": "App Namespace",
@@ -9,8 +9,8 @@ POST https://api.bigcommerce.com/stores/qe352b9ase/v3/catalog/products/103/metaf
 "description": "Where products are located"
 }
 
-Order Metafields: api query
-POST https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/101/metafields
+//Order Metafields: api query
+//POST https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/101/metafields
 {
 "permission_set": "app_only",
 "namespace": "App Namespace for order",
@@ -19,8 +19,8 @@ POST https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/101/metafields
 "description": "Products are located"
 }
 
-Edit metafield:
-PUT https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/101/metafields/3
+//Edit metafield:
+//PUT https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/101/metafields/3
 {
 "permission_set": "app_only",
 "namespace": "App Namespace for order",
@@ -29,7 +29,7 @@ PUT https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/101/metafields/3
 "description": "Products are located 22222"
 }
 
-Delete Maetafield:
-DELETE https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/105/metafields/3
-Get metafield
-GET https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/105/metafields/3
+//Delete Maetafield:
+//DELETE https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/105/metafields/3
+//Get metafield
+//GET https://api.bigcommerce.com/stores/qe352b9ase/v3/orders/105/metafields/3
