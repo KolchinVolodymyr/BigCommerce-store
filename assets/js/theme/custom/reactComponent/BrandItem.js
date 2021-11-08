@@ -1,14 +1,13 @@
 import React from 'react';
 
 export default function BrandItem(props) {
-//    console.log('props', props);
-//    console.log('props arr', props.arr);
     return (
         <ul className="navPage-subMenu-item">
-            {props.arr.map(el => {
+            {props.arrLetter.map(el => {
+                let urlBrand = `/brands/?starting-${el.toLowerCase()}`
                 return (
                     <li className="subMenu-item" key={el}>
-                        <a href={el}>{el}</a>
+                        <a href={urlBrand}>{el}</a>
                     </li>
                 )
             })}

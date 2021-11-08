@@ -36,7 +36,6 @@ export default class Global extends PageManager {
         }
         loadingProgressBar();
         svgInjector();
-        console.log('hello2');
         Brand();
     }
 }
