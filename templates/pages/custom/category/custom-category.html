@@ -1,6 +1,10 @@
-
+{{inject 'storefrontAPIToken' settings.storefront_api.token}}
 {{inject "categoryProductsPerPage" theme_settings.categorypage_products_per_page}}
 {{inject "products" category.products}}
+{{inject "errorStockOn" (lang 'category.error_stock_on')}}
+{{inject "validProductQuantity" (lang 'category.valid_product_quantity')}}
+{{inject "cartEmpty" (lang 'category.cart_empty')}}
+{{inject "enterValidData" (lang 'category.enter_valid_data')}}
 {{#partial "head"}}
 {{#if pagination.category.previous}}
 <link rel="prev" href="{{pagination.category.previous}}">
