@@ -6,6 +6,7 @@
   "author": "BigCommerce",
   "license": "MIT",
   "dependencies": {
+    "@apollo/client": "^3.4.16",
     "@babel/preset-react": "^7.14.5",
     "@bigcommerce/stencil-utils": "^6.8.1",
     "bigcommerce-graphql": "^1.0.6",
@@ -16,6 +17,7 @@
     "focus-within-polyfill": "^5.1.0",
     "formdata-polyfill": "^3.0.20",
     "foundation-sites": "^5.5.3",
+    "graphql": "^16.0.1",
     "jquery": "^3.5.1",
     "jstree": "github:vakata/jstree",
     "lazysizes": "5.2.2",

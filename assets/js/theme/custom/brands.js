@@ -1,5 +1,7 @@
 import PageManager from '../page-manager';
-
+import initApolloClient from '../global/graphql/client';
+import customerData from './gql/customBrands.gql';
+//import flattenGraphQLResponse from 'humanize-graphql-response';
 
 export default class CustomBrands extends PageManager {
     constructor(context) {

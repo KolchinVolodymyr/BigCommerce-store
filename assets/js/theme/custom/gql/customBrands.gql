@@ -1,0 +1,25 @@
+query customBrands {
+  site {
+    settings {
+      storeName
+    }
+    products {
+      edges {
+        node {
+          name
+          sku
+          prices {
+            retailPrice {
+              value
+              currencyCode
+            }
+            price {
+              value
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  }
+}
