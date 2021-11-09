@@ -1,25 +1,23 @@
-query customBrands {
-  site {
-    settings {
-      storeName
-    }
-    products {
-      edges {
-        node {
-          name
-          sku
-          prices {
-            retailPrice {
-              value
-              currencyCode
+query CustomBrand(
+    $cursor: String,
+) {
+    site {
+        brands(first: 2, after:$cursor) {
+            pageInfo {
+                endCursor
+                hasNextPage
+            },
+            edges {
+                node {
+                id
+                entityId
+                name
+                defaultImage {
+                    url(width: 100)
+                }
+                path
+                }
             }
-            price {
-              value
-              currencyCode
-            }
-          }
         }
-      }
     }
-  }
 }
