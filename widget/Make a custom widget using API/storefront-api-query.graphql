@@ -1,0 +1,18 @@
+query WidgetQueries {
+  site {
+    products(first: 50) {
+      edges {
+      	node {
+            name
+            path
+            prices{
+                salePrice { currencyCode value }
+                basePrice { currencyCode value }
+            }
+            defaultImage { url(width: 500, height: 500) }
+         }
+      }
+    }
+  }
+}
+
