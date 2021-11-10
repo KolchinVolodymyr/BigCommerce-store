@@ -3,6 +3,7 @@ import React from 'react';
 export default class BrandItemProduct extends React.Component {
 
     render() {
+    console.log(this.props.brandsList);
     if(this.props.brandsList.length==0) {
         return (
             <ul className="brandGrid">
@@ -22,7 +23,7 @@ export default class BrandItemProduct extends React.Component {
                                     <figure className="card-figure">
                                         <a className="card-figure__link" aria-label={el.name} href={el.path}>
                                             <div className="card-img-container">
-                                                <img className="card-image ls-is-cached lazyloaded" src='https://cdn11.bigcommerce.com/s-qe352b9ase/stencil/48c627e0-229b-013a-2f06-5ec2a6edaf2e/img/BrandDefault.gif'></img>
+                                                <img className="card-image ls-is-cached lazyloaded" src={el.defaultImage ? el.defaultImage.url: "https://cdn11.bigcommerce.com/s-qe352b9ase/stencil/48c627e0-229b-013a-2f06-5ec2a6edaf2e/img/BrandDefault.gif"} ></img>
                                             </div>
                                         </a>
                                     </figure>
