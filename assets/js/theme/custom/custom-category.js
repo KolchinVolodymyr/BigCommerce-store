@@ -7,11 +7,6 @@ import ReactDOM from 'react-dom';
 import ProductItem from './reactComponent/productItemOrder';
 import ProductTotal from "./reactComponent/productOrderTotal";
 import { showAlertModal } from '../global/modal';
-import nod from "nod-validate";
-import initApolloClient from '../global/graphql/client';
-import flattenGraphQLResponse from 'humanize-graphql-response';
-import productCategory from './gql/productCategory.gql';
-import { gql } from '@apollo/client';
 
 export default class CustomCategory extends PageManager {
     constructor(context) {
