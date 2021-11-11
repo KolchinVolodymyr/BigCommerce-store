@@ -41,6 +41,7 @@ export default class CustomBrands extends PageManager {
             .then(()=> {
                 let brandsList = this.brandsList.filter(el => el.name.toLowerCase().startsWith(this.url.slice(-1)));
                 ReactDOM.render(<BrandItemProduct value={this.url.slice(-1)} brandsList={brandsList}/>, this.$container);
+                $('#brandsOverlay').hide();
             });
 
     }
