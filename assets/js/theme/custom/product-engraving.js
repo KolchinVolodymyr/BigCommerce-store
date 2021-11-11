@@ -97,7 +97,16 @@ export default class CustomProductEngraving extends PageManager {
                 if (this.Nod.getStatus([this.$productInput]) == 'invalid') {
                     e.preventDefault();
                 } else {
-                    this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, this.lineItems)
+                    this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`,{
+                    "lineItems": [{
+                         "quantity": this.productCount,
+                         "productId": this.productId,
+                         "optionSelections": [
+                             {"optionId": this.EngravingLengthID, "optionValue": this.optionValueID},
+                             {"optionId": this.EngravingID, "optionValue": `${this.productInputTextValue}`}
+                         ]
+                     }]
+                    })
                     .then(()=> {window.location = '/cart.php'})
                 }
             }.bind(this));
@@ -164,7 +173,7 @@ export default class CustomProductEngraving extends PageManager {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: cartItems,
+            body: JSON.stringify(cartItems),
         })
         .then(response => response.json());
     };
