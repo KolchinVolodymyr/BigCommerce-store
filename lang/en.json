@@ -230,7 +230,11 @@
         "filter_select_announcement": "The filter has been applied",
         "view_all": {
             "name": "All {category}"
-        }
+        },
+        "error_stock_on": "We dont have enough stock on. Available quantity",
+        "valid_product_quantity": "Please enter a valid product quantity(from 0 to 10)",
+        "cart_empty": "Cart is empty, add product to cart",
+        "enter_valid_data": "Enter valid data (0-10)"
     },
     "brand": {
         "label": "Brands",
@@ -695,6 +699,10 @@
         }
     },
     "products": {
+        "new_bange": "New",
+        "on_sale": "On sale",
+        "closeout": "Closeout",
+        "free_shipping": "Free Shipping",
         "none": "None",
         "gift_option": "Choose gift option",
         "send_congratulation_inscription_email": "Send a congratulation inscription via email",
@@ -805,7 +813,9 @@
             "price": "and get {discount} off",
             "fixed": "and pay only {discount} each"
         },
-        "card_default_image_alt": "Image coming soon"
+        "card_default_image_alt": "Image coming soon",
+        "error_message_stock" : "Available quantity",
+        "please_quantity": "Please set the quantity of variants no greater than available"
     },
     "invoice": {
         "for_order": "{name} Invoice for Order #{id}",
