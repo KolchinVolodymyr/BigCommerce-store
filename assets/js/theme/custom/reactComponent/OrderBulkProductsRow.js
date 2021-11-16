@@ -15,24 +15,6 @@ export default class OrderBulkProductsRow extends React.Component {
         const inputValue =  e.target.value.replace(/[^0-9]/g, "");
         this.setState({ inputValue });
 
-//        this.Nod.add([
-//        {
-//            selector:  $input,
-//            validate: function (callback, value){
-//                if (value>this.stock) {
-//                    callback(false);
-//                    $('#productVariants')[0].setAttribute("disabled", "");
-//                } else {
-//                    callback(true);
-//                    if( $('.form-field--error').length >= 1 ){
-//                        $('#productVariants')[0].setAttribute("disabled", "");
-//                    } else {
-//                        $('#productVariants')[0].removeAttribute("disabled");
-//                    }
-//                }
-//            }.bind(this),
-//            errorMessage: `${this.props.errorMessageStock} ${this.stock}`
-//        }]);
         this.Nod.performCheck();
 
         this.productVariantPrice = e.target.value.replace(/[^\d]/g,'') * this.props.product.prices.price.value;
