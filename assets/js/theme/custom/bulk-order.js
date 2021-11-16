@@ -2,6 +2,11 @@ import PageManager from '../page-manager';
 import initApolloClient from '../global/graphql/client';
 import customerData from './gql/customerData.gql';
 import getProductsSKU from './gql/getProductsSKU.gql';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import OrderBulkProductsTable from './reactComponent/OrderBulkProductsTable';
+import 'regenerator-runtime/runtime';
+
 
 export default class CustomBulkOrder extends PageManager {
     constructor(context) {
@@ -9,6 +14,7 @@ export default class CustomBulkOrder extends PageManager {
         this.gqlClient = initApolloClient(this.context.storefrontAPIToken);
         this.productSKUsArray = null;
         this.productsList = [];
+        this.$container = $('.bulk-order-container')[0];
     }
 
     onReady() {
@@ -26,8 +32,8 @@ export default class CustomBulkOrder extends PageManager {
      *
      * @param {String} productSkuItem
      */
-    productsSKU(productSkuItem) {
-        this.gqlClient.query({
+     productsSKU(productSkuItem) {
+        return this.gqlClient.query({
             query: getProductsSKU,
             variables: { sku: productSkuItem },
         }).then(res => {
@@ -42,8 +48,7 @@ export default class CustomBulkOrder extends PageManager {
      getProductsData(productSKUs){
         this.forEachPromise(productSKUs)
             .then(() => {
-                console.log('done', this.productsList);
-                //React render
+                ReactDOM.render(<OrderBulkProductsTable productsList={this.productsList}/>, this.$container);
             });
      }
 
