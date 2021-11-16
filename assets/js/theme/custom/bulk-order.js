@@ -22,7 +22,7 @@ export default class CustomBulkOrder extends PageManager {
             query: customerData,
         }).then(res => {
             this.productSKUsArray = res.data.customer.attributes.productBulkOrderList.value.replace(/\s/g, '').split(',');
-            console.log('this.productSKUsArray', this.productSKUsArray);
+//            console.log('this.productSKUsArray', this.productSKUsArray);
             this.getProductsData(this.productSKUsArray);
         })
     }
