@@ -58,3 +58,26 @@
 .formInputEmail {
     height: 60px;
 }
+.container-order-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .customer-data, .billing-data {
+        width: 49%;
+        border: 1px solid #000;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+    .line-data {
+        width: 100%;
+        border: 1px solid #000;
+        border-radius: 15px;
+        padding: 15px;
+    }
+    .line-data {
+        .line-data-items {
+            display: flex;
+        }
+    }
+}

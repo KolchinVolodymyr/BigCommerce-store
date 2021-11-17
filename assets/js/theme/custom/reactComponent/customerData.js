@@ -6,9 +6,9 @@ export default class CustomerData extends React.Component {
     }
 
     render() {
-        console.log('this', this.props);
+        console.log('q', this.props);
         return (
-            <div>
+            <div className='container-order-page'>
                 <div className='customer-data'>
                     <div>Customer Data</div>
                     <div>Order ID: {this.props.orderId}</div>
@@ -36,10 +36,10 @@ export default class CustomerData extends React.Component {
                     <div>Line items</div>
                     {this.props.physicalItems.map((el)=>{
                         return (
-                            <div key={el.id}>
-                                <div>count: {el.quantity}</div>
+                            <div key={el.id} className='line-data-items'>
                                 <div>Name: {el.name}</div>
                                 <div>Sku: {el.sku}</div>
+                                <div>count: {el.quantity}</div>
                                 <div>List price: {el.listPrice}</div>
                             </div>
                         )
