@@ -30,7 +30,7 @@ export default class CustomBulkOrder extends PageManager {
     }
 
 
-    /**
+     /**
      *
      * @param {String} productSkuItem
      */
@@ -40,11 +40,10 @@ export default class CustomBulkOrder extends PageManager {
             variables: { sku: productSkuItem },
         }).then(res => {
             this.productsList.push(res.data.site.product);
-            console.log('this.productsList', this.productsList);
         })
     }
 
-    /**
+     /**
      *
      * @param {Array} productSKUs
      */
@@ -57,10 +56,10 @@ export default class CustomBulkOrder extends PageManager {
      }
 
     /**
-     *
-     * @param items An array of items.
-     * @returns {Promise}
-     */
+    *
+    * @param items An array of items.
+    * @returns {Promise}
+    */
     forEachPromise(items) {
         return items.reduce(function (promise, item) {
             return promise.then(function () {
@@ -70,8 +69,8 @@ export default class CustomBulkOrder extends PageManager {
     }
 
     /**
-     * Adds a product to the cart
-     */
+    * Adds a product to the cart
+    */
     addToCart() {
         let cartItems = [];
         let qtyFields = Array.from(document.getElementsByClassName('qtyField'));
@@ -88,7 +87,7 @@ export default class CustomBulkOrder extends PageManager {
     }
 
     /**
-    *   Adds a line items to the Cart
+    * Adds a line items to the Cart
     */
     createCart(lineItems) {
         fetch(`/api/storefront/cart`)

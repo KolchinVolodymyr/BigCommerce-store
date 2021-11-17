@@ -474,6 +474,10 @@
         .qtyField {
             width: 100%;
         }
+        .form-inlineMessage {
+            position: absolute;
+            width: 200px;
+        }
     }
 }
 .containerDetailProduct {
@@ -485,8 +489,7 @@
             justify-content: center;
         }
         button {
-            display: flex;
-            justify-content: center;
+            margin: 0 auto;
             width: 350px;
         }
     }
