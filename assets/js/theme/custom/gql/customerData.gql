@@ -8,6 +8,11 @@ query customerData {
         value
         name
       }
+      showPage: attribute(entityId: 3) {
+        entityId
+        value
+        name
+      }
     }
   }
 }

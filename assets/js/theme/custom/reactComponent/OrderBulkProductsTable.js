@@ -41,12 +41,12 @@ export default class OrderBulkProductsTable extends React.Component {
                     })
                 }
                 <div className="total">
-                    <button id="productVariants" className="button button--primary">Add to Cart</button>
                     <div className="total-price">
-                        <span>Total price: </span>
+                        <span>Total cost: </span>
                         <span id="totalPriceValue">{this.state.total}</span>
                         <span>UAH</span>
                     </div>
+                    <button id="productVariants" className="button button--primary">Add to Cart</button>
                 </div>
             </div>
         )

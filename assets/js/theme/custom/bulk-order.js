@@ -15,14 +15,15 @@ export default class CustomBulkOrder extends PageManager {
         this.productSKUsArray = null;
         this.productsList = [];
         this.$container = $('.bulk-order-container')[0];
+        this.showPage = null;
     }
 
     onReady() {
         this.gqlClient.query({
             query: customerData,
         }).then(res => {
+            this.showPage = res.data.customer.attributes.showPage.value.trim().toLowerCase();
             this.productSKUsArray = res.data.customer.attributes.productBulkOrderList.value.replace(/\s/g, '').split(',');
-//            console.log('this.productSKUsArray', this.productSKUsArray);
             this.getProductsData(this.productSKUsArray);
         })
     }
@@ -48,7 +49,8 @@ export default class CustomBulkOrder extends PageManager {
      getProductsData(productSKUs){
         this.forEachPromise(productSKUs)
             .then(() => {
-                ReactDOM.render(<OrderBulkProductsTable productsList={this.productsList}/>, this.$container);
+                console.log('this.showPage', this.showPage);
+                this.showPage === 'show' ?  ReactDOM.render(<OrderBulkProductsTable productsList={this.productsList}/>, this.$container) : null
             });
      }
 
