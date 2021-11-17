@@ -479,5 +479,15 @@
 .containerDetailProduct {
     .total {
         display: flex;
+        flex-direction: column;
+        .total-price {
+            display: flex;
+            justify-content: center;
+        }
+        button {
+            display: flex;
+            justify-content: center;
+            width: 350px;
+        }
     }
 }

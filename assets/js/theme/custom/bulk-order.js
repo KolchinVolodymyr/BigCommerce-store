@@ -16,13 +16,14 @@ export default class CustomBulkOrder extends PageManager {
         this.productsList = [];
         this.$container = $('.bulk-order-container')[0];
         this.showPage = null;
+        this.productVariants = [];
     }
 
     onReady() {
         this.gqlClient.query({
             query: customerData,
         }).then(res => {
-            this.showPage = res.data.customer.attributes.showPage.value.trim().toLowerCase();
+            this.showPage = Number(res.data.customer.attributes.showPage.value);
             this.productSKUsArray = res.data.customer.attributes.productBulkOrderList.value.replace(/\s/g, '').split(',');
             this.getProductsData(this.productSKUsArray);
         })
@@ -39,6 +40,7 @@ export default class CustomBulkOrder extends PageManager {
             variables: { sku: productSkuItem },
         }).then(res => {
             this.productsList.push(res.data.site.product);
+            console.log('this.productsList', this.productsList);
         })
     }
 
@@ -49,8 +51,8 @@ export default class CustomBulkOrder extends PageManager {
      getProductsData(productSKUs){
         this.forEachPromise(productSKUs)
             .then(() => {
-                console.log('this.showPage', this.showPage);
-                this.showPage === 'show' ?  ReactDOM.render(<OrderBulkProductsTable productsList={this.productsList}/>, this.$container) : null
+                this.showPage === 1 ?  ReactDOM.render(<OrderBulkProductsTable productsList={this.productsList}/>, this.$container) : null;
+                $('#productVariants').on('click', () => this.addToCart());
             });
      }
 
@@ -66,5 +68,53 @@ export default class CustomBulkOrder extends PageManager {
             }.bind(this));
         }.bind(this), Promise.resolve());
     }
+
+    /**
+     * Adds a product to the cart
+     */
+    addToCart() {
+        let cartItems = [];
+        let qtyFields = Array.from(document.getElementsByClassName('qtyField'));
+        for (const [i, item] of qtyFields.entries()) {
+            if (item.value > 0 && parseInt(item.value)) {
+                let lineItem = {
+                    "quantity": parseInt(item.value),
+                    "productId": this.productsList[i].entityId,
+                }
+                cartItems.push(lineItem);
+            }
+        }
+        this.createCart(cartItems);
+    }
+
+    /**
+    *   Adds a line items to the Cart
+    */
+    createCart(lineItems) {
+        fetch(`/api/storefront/cart`)
+            .then(response => response.json())
+            .then(cart => {
+                this.cartItemsID = cart[0]?.id;
+            })
+            .then(()=> {
+                this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `/${this.cartItemsID}/item` : ''}`, lineItems)
+            })
+    }
+
+    /**
+    * Creates a Cart
+    */
+    createCartItems(url, cartItems) {
+        return fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ lineItems: cartItems}),
+        })
+        .then(response => response.json())
+        .then(()=> {window.location = '/cart.php'})
+    };
 
 }
