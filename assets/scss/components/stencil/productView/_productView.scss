@@ -451,4 +451,25 @@
 }
 .order-bulk-product {
     display: flex;
+    margin-bottom: 30px;
+    border: 1px solid rgb(82, 82, 82);
+    border-radius: 25px;
+    align-items: center;
+    .product-name {
+        width: 16%;
+        text-align: center;
+    }
+    img {
+        width: 16%;
+    }
+    .product-description {
+        width: 40%;
+    }
+    .product-price {
+        width: 12%;
+        text-align: center;
+    }
+    .product-count {
+        width: 15%;
+    }
 }

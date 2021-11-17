@@ -24,10 +24,10 @@ export default class OrderBulkProductsRow extends React.Component {
     render() {
         return (
                <div className='order-bulk-product'>
-                    <div>{this.props.product.name}</div>
+                    <div className='product-name'>{this.props.product.name}</div>
                     <img src={this.props.product.defaultImage.url}></img>
-                    <div>{this.props.product.plainTextDescription}</div>
-                    <div>{this.props.product.prices.price.value} {this.props.product.prices.price.currencyCode}</div>
+                    <div className='product-description'>{this.props.product.plainTextDescription}</div>
+                    <div className='product-price'>{this.props.product.prices.price.value} {this.props.product.prices.price.currencyCode}</div>
                     <div className='product-count'>
                          <input
                              type='text'
