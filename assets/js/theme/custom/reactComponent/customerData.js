@@ -11,7 +11,6 @@ export default class CustomerData extends React.Component {
                 <div className='customer-data'>
                     <div className='title'>Customer Data</div>
                     <div>Order ID: {this.props.orderId}</div>
-                    <div>Customer ID: {this.props.customerId}</div>
                     <div>First Name: {this.props.billingAddress.firstName}</div>
                     <div>last Name: {this.props.billingAddress.lastName}</div>
                     <div>Status: {this.props.status}</div>
@@ -56,8 +55,8 @@ export default class CustomerData extends React.Component {
                         )
                     })}
                     </table>
-                    <div className='discount-amount'>Discount amount: {this.props.discountAmount}{this.props.currency}</div>
-                    <div className='total'>Total: {this.props.orderAmount}{this.props.currency}</div>
+                    <div className='discount-amount'>Discount amount: {this.props.discountAmount}</div>
+                    <div className='total'>Total: {this.props.orderAmount}</div>
                 </div>
             </div>
         )
