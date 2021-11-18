@@ -45,6 +45,8 @@
     "Firefox ESR"
   ],
   "settings": {
+    "show_brand": true,
+    "show_brand_url": "/brands",
     "hide_breadcrumbs": false,
     "hide_page_heading": false,
     "hide_category_page_heading": false,

@@ -1,7 +1,8 @@
 {
     "header": {
         "welcome_back": "Welcome back, {name}",
-        "skip_to_main": "Skip to main content"
+        "skip_to_main": "Skip to main content",
+        "brand_item_menu": "Brand"
     },
     "footer": {
         "title": "Footer Start",
@@ -698,6 +699,10 @@
         }
     },
     "products": {
+        "new_bange": "New",
+        "on_sale": "On sale",
+        "closeout": "Closeout",
+        "free_shipping": "Free Shipping",
         "none": "None",
         "gift_option": "Choose gift option",
         "send_congratulation_inscription_email": "Send a congratulation inscription via email",
