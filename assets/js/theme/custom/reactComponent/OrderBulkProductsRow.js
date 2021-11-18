@@ -54,7 +54,7 @@ export default class OrderBulkProductsRow extends React.Component {
         return (
             <div className='order-bulk-product'>
                 <div className='product-name'>{this.props.product.name}</div>
-                <img src={this.props.product.defaultImage.url}></img>
+                <img src={this.props.product.defaultImage ? this.props.product.defaultImage.url: "https://cdn11.bigcommerce.com/s-d1y3ufri1f/stencil/87d3dea0-180a-013a-b788-32ede3865cdc/img/ProductDefault.gif"}></img>
                 <div className='product-description'>{this.props.product.description.replace(/<[^>]+>/g, '').substr(0, 300)+'...'}</div>
                 <div className='product-price'>{this.props.product.prices.price.value} {this.props.product.prices.price.currencyCode}</div>
                 <div className='product-count'>

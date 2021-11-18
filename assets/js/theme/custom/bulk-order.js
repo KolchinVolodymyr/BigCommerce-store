@@ -39,6 +39,7 @@ export default class CustomBulkOrder extends PageManager {
             query: getProductsSKU,
             variables: { sku: productSkuItem },
         }).then(res => {
+            console.log('res', res.data.site.product);
             this.productsList.push(res.data.site.product);
         })
     }
