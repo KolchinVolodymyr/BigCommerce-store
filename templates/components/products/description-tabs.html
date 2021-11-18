@@ -24,7 +24,7 @@
         </li>
     {{/all}}
     {{#contains (JSONstringify product.custom_fields) 'name":"webdav"'}}
-    <li class="tab" role="presentation" id="tab-title-web-dav" style="display: none;">
+    <li class="tab" role="presentation" id="titleWebDav" style="display: none;">
         <a class="tab-title" href="#webDavID" role="tab" tabindex="0" aria-selected="false" controls="webDavID">
             {{#filter product.custom_fields 'webdav' property='name'}}
             {{this.value}}
