@@ -10,6 +10,20 @@
 
 {{{head.scripts}}}
 
+<script type="text/javascript">
+    var jsContext = JSON.stringify({
+        "template": "{{template_file}}",
+        "storefrontAPIToken": "{{settings.storefront_api.token}}"
+    });
+</script>
+
+<script>window.__webpack_public_path__ = "{{cdn 'assets/dist/'}}";</script>
+<script src="{{cdn 'assets/dist/theme-bundle.main.js'}}"></script>
+<script>
+    {{!-- Exported in app.js --}}
+    window.stencilBootstrap("{{page_type}}", jsContext).load();
+</script>
+
 {{/partial}}
 
 {{#partial "page"}}
