@@ -22,17 +22,17 @@ export default class OrderBulkProductsRow extends React.Component {
             this.Nod.add([{
                   selector: $input,
                   validate: `max-number:${this.stock}`,
-                  errorMessage: `Error ${this.stock}`
+                  errorMessage: `Available for purchase  ${this.stock}`
               },{
                 selector: $input,
                 validate: "integer",
-                errorMessage: `Error integer`
+                errorMessage: `You must enter numbers.`
               }])
         } else {
             this.Nod.add([{
               selector: $input,
               validate: "integer",
-              errorMessage: `Error integer`
+              errorMessage: `You must enter numbers.`
             }])
         }
         this.Nod.performCheck();
