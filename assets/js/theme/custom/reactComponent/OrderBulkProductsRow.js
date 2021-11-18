@@ -32,7 +32,7 @@ export default class OrderBulkProductsRow extends React.Component {
             <div className='order-bulk-product'>
                 <div className='product-name'>{this.props.product.name}</div>
                 <img src={this.props.product.defaultImage.url}></img>
-                <div className='product-description'>{this.props.product.plainTextDescription}</div>
+                <div className='product-description'>{this.props.product.description.replace(/<[^>]+>/g, '').substr(0, 300)+'...'}</div>
                 <div className='product-price'>{this.props.product.prices.price.value} {this.props.product.prices.price.currencyCode}</div>
                 <div className='product-count'>
                      <input
