@@ -23,6 +23,15 @@
             <a class="tab-title productView-reviewTabLink" href="#tab-reviews">{{lang 'products.reviews.header' total=product.reviews.total}}</a>
         </li>
     {{/all}}
+    {{#contains (JSONstringify product.custom_fields) 'name":"webdav"'}}
+    <li class="tab" role="presentation" id="tab-title-web-dav" style="display: none;">
+        <a class="tab-title" href="#webDavID" role="tab" tabindex="0" aria-selected="false" controls="webDavID">
+            {{#filter product.custom_fields 'webdav' property='name'}}
+            {{this.value}}
+            {{/filter}}
+        </a>
+    </li>
+    {{/contains}}
 </ul>
 <div class="tabs-contents">
     {{#if product.description}}
@@ -50,4 +59,10 @@
            {{> components/products/reviews reviews=product.reviews product=product urls=urls}}
        </div>
     {{/all}}
+    {{#contains (JSONstringify product.custom_fields) 'name":"webdav"'}}
+    <div role="tabpanel" aria-hidden="false" class="tab-content has-jsContent" id="webDavID">
+        <div id="webDavContent">
+        </div>
+    </div>
+    {{/contains}}
 </div>
