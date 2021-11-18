@@ -4,6 +4,23 @@
     "settings": [
       {
         "type": "heading",
+        "content": "Brands configuration"
+      },
+      {
+        "type": "checkbox",
+        "label": "Show brand",
+        "force_reload": true,
+        "id": "show_brand"
+      },
+      {
+        "type": "text",
+        "label": "Input Brand",
+        "reference": "show_brand",
+        "reference_default": false,
+        "id": "show_brand_url"
+      },
+      {
+        "type": "heading",
         "content": "i18n.BackgroundAndLines"
       },
       {
