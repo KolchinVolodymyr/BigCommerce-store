@@ -30,7 +30,7 @@ const pageClasses = {
     blog: noop,
     blog_post: noop,
     brand: () => import('./theme/brand'),
-    brands: () => import('./theme/custom/brands'),
+    brands: () => noop,
     cart: () => import('./theme/cart'),
     category: () => import('./theme/category'),
     compare: () => import('./theme/compare'),
