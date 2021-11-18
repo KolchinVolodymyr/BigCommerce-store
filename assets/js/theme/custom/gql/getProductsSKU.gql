@@ -1,0 +1,29 @@
+query getProductsSku(
+    $sku: String,
+) {
+    site {
+      product(sku: $sku) {
+        id
+        entityId
+        name
+        sku
+        description
+        plainTextDescription
+      	inventory{
+          aggregated{
+            availableToSell
+          }
+        }
+        prices {
+            price {
+                currencyCode
+                value
+            }
+        }
+        defaultImage {
+          url(width: 100)
+        }
+      }
+    }
+}
+

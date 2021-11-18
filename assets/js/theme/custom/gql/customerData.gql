@@ -3,7 +3,12 @@ query customerData {
     firstName
     entityId
     attributes {
-      paymentMethodLabel: attribute(entityId: 1) {
+      productBulkOrderList: attribute(entityId: 2) {
+        entityId
+        value
+        name
+      }
+      showPage: attribute(entityId: 4) {
         entityId
         value
         name
@@ -11,3 +16,4 @@ query customerData {
     }
   }
 }
+
