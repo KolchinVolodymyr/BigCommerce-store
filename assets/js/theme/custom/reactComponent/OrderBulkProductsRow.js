@@ -4,6 +4,9 @@ import nod from "nod-validate";
 export default class OrderBulkProductsRow extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            inputValue: ''
+        }
         this.productVariantPrice = 0;
         this.Nod = nod();
         this.Nod.configure({submit: document.getElementById('productVariants'), disableSubmit: true});
@@ -20,11 +23,31 @@ export default class OrderBulkProductsRow extends React.Component {
                   selector: $input,
                   validate: `max-number:${this.stock}`,
                   errorMessage: `Error ${this.stock}`
+              },{
+                selector: $input,
+                validate: "integer",
+                errorMessage: `Error integer`
               }])
+        } else {
+            this.Nod.add([{
+              selector: $input,
+              validate: "integer",
+              errorMessage: `Error integer`
+            }])
         }
         this.Nod.performCheck();
         this.productVariantPrice = e.target.value.replace(/[^\d]/g,'') * this.props.product.prices.price.value;
         this.props.changeTotal(this.props.product.entityId, this.productVariantPrice);
+
+        if(this.Nod.areAll('valid')) {
+            if($('.form-inlineMessage').length !== 0){
+                $('#productVariants')[0].setAttribute("disabled", "");
+            } else {
+                $('#productVariants')[0].removeAttribute("disabled");
+            }
+        } else {
+            $('#productVariants')[0].setAttribute("disabled", "");
+        }
     }
 
     render() {
@@ -38,9 +61,9 @@ export default class OrderBulkProductsRow extends React.Component {
                      <input
                          type='number'
                          className='qtyField'
-                         min='0'
-                         onChange={this.handleChange.bind(this)}
-                         pattern='[0-9]*'/>
+                         pattern='[0-9]{0,5}'
+                         onInput={this.handleChange.bind(this)}
+                         value={this.state.inputValue}/>
                 </div>
             </div>
         )
