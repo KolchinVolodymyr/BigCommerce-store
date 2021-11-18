@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import OrderBulkProductsTable from './reactComponent/OrderBulkProductsTable';
 import 'regenerator-runtime/runtime';
-
+import swal from '../global/sweet-alert';
 
 export default class CustomBulkOrder extends PageManager {
     constructor(context) {
@@ -52,6 +52,7 @@ export default class CustomBulkOrder extends PageManager {
             .then(() => {
                 this.showPage === 1 ?  ReactDOM.render(<OrderBulkProductsTable productsList={this.productsList}/>, this.$container) : null;
                 $('#productVariants').on('click', () => this.addToCart());
+                $('#productVariants')[0].setAttribute("disabled", "");
             });
      }
 
@@ -72,18 +73,26 @@ export default class CustomBulkOrder extends PageManager {
     * Adds a product to the cart
     */
     addToCart() {
-        let cartItems = [];
-        let qtyFields = Array.from(document.getElementsByClassName('qtyField'));
-        for (const [i, item] of qtyFields.entries()) {
-            if (item.value > 0 && parseInt(item.value)) {
-                let lineItem = {
-                    "quantity": parseInt(item.value),
-                    "productId": this.productsList[i].entityId,
+    let num = Number($('#totalPriceValue')[0].innerHTML).toFixed(0);
+        if(Number(num)!== 0) {
+            let cartItems = [];
+            let qtyFields = Array.from(document.getElementsByClassName('qtyField'));
+            for (const [i, item] of qtyFields.entries()) {
+                if (item.value > 0 && parseInt(item.value)) {
+                    let lineItem = {
+                        "quantity": parseInt(item.value),
+                        "productId": this.productsList[i].entityId,
+                    }
+                    cartItems.push(lineItem);
                 }
-                cartItems.push(lineItem);
             }
+            this.createCart(cartItems);
+        } else {
+           return swal.fire({
+               text: "Please select at least one product",
+               icon: 'error',
+           });
         }
-        this.createCart(cartItems);
     }
 
     /**
