@@ -6,18 +6,17 @@ export default class CustomerData extends React.Component {
     }
 
     render() {
-        console.log('q', this.props);
         return (
             <div className='container-order-page'>
                 <div className='customer-data'>
-                    <div>Customer Data</div>
+                    <div className='title'>Customer Data</div>
                     <div>Order ID: {this.props.orderId}</div>
-                    <div>First Name:{this.props.billingAddress.firstName}</div>
+                    <div>First Name: {this.props.billingAddress.firstName}</div>
                     <div>last Name: {this.props.billingAddress.lastName}</div>
                     <div>Status: {this.props.status}</div>
                 </div>
                 <div className='billing-data'>
-                    <div>Billing address</div>
+                    <div className='title'>Billing address</div>
                     <div>First name: {this.props.billingAddress.firstName}</div>
                     <div>last name: {this.props.billingAddress.lastName}</div>
                     <div>Billing address1: {this.props.billingAddress.address1}</div>
@@ -33,19 +32,31 @@ export default class CustomerData extends React.Component {
                     <div>State or province code: {this.props.billingAddress.stateOrProvinceCode}</div>
                 </div>
                 <div className='line-data'>
-                    <div>Line items</div>
+                    <div className='title'>Line items</div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <th>Sku</th>
+                                <th>Count</th>
+                                <th>List price</th>
+                            </tr>
+                        </tbody>
                     {this.props.physicalItems.map((el)=>{
                         return (
-                            <div key={el.id} className='line-data-items'>
-                                <div>Name: {el.name}</div>
-                                <div>Sku: {el.sku}</div>
-                                <div>count: {el.quantity}</div>
-                                <div>List price: {el.listPrice}</div>
-                            </div>
+                            <tbody key={el.id}>
+                                <tr>
+                                    <td className='td-name'>{el.name}</td>
+                                    <td className='td-sku'>{el.sku}</td>
+                                    <td className='td-quantity'>{el.quantity}</td>
+                                    <td className='td-listPrice'>{el.listPrice}</td>
+                                </tr>
+                            </tbody>
                         )
                     })}
-                    <div>Discount amount:{this.props.discountAmount}</div>
-                    <div>Total: {this.props.orderAmount}</div>
+                    </table>
+                    <div className='discount-amount'>Discount amount: {this.props.discountAmount}</div>
+                    <div className='total'>Total: {this.props.orderAmount}</div>
                 </div>
             </div>
         )

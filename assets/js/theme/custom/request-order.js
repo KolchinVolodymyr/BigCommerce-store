@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CustomerData from './reactComponent/customerData'
+import { showAlertModal } from '../global/modal';
 
 export default class Custom extends PageManager {
     constructor(context) {
@@ -13,23 +14,29 @@ export default class Custom extends PageManager {
         this.$totalContainer = $('#request-order')[0];
         this.customerData = null;
     }
-    onReady() {
-
-    }
-
-    async customAddToCartButton () {
+    customAddToCartButton () {
         let orderID = this.$inputIdOrder.value;
-        const response = await fetch(`/api/storefront/orders/${orderID}`, { credentials: 'include' });
-        const data = await response.json();
-        console.log('data', data);
-        ReactDOM.render(<CustomerData
-                            orderId={data.orderId}
-                            status={data.status}
-                            billingAddress={data.billingAddress}
-                            physicalItems={data.lineItems.physicalItems}
-                            orderAmount={data.orderAmount}
-                            discountAmount={data.discountAmount}
-                            />, this.$totalContainer);
+        fetch(`/api/storefront/orders/${orderID}`, { credentials: 'include' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Provided order Id doesn't represent a valid order`);
+                }
+                return response.json()
+            })
+            .then(data => {
+                ReactDOM.render(<CustomerData
+                    orderId={data.orderId}
+                    status={data.status}
+                    billingAddress={data.billingAddress}
+                    physicalItems={data.lineItems.physicalItems}
+                    orderAmount={data.orderAmount}
+                    discountAmount={data.discountAmount}
+                    />, this.$totalContainer);
+            })
+            .catch(err => {
+                console.log(err);
+                showAlertModal(err);
+            });
     }
 
 }
