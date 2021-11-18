@@ -11,12 +11,13 @@ export default class CustomerData extends React.Component {
                 <div className='customer-data'>
                     <div className='title'>Customer Data</div>
                     <div>Order ID: {this.props.orderId}</div>
+                    <div>Customer ID: {this.props.customerId}</div>
                     <div>First Name: {this.props.billingAddress.firstName}</div>
                     <div>last Name: {this.props.billingAddress.lastName}</div>
                     <div>Status: {this.props.status}</div>
                 </div>
                 <div className='billing-data'>
-                    <div className='title'>Billing address</div>
+                    <div className='title'>Billing Data</div>
                     <div>First name: {this.props.billingAddress.firstName}</div>
                     <div>last name: {this.props.billingAddress.lastName}</div>
                     <div>Billing address1: {this.props.billingAddress.address1}</div>

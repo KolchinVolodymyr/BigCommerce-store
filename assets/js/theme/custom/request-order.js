@@ -23,8 +23,9 @@ export default class Custom extends PageManager {
                 }
                 return response.json()
             })
-            .then(data => {
+            .then(data => {console.log('data', data);
                 ReactDOM.render(<CustomerData
+                    customerId={data.customerId}
                     orderId={data.orderId}
                     status={data.status}
                     billingAddress={data.billingAddress}
