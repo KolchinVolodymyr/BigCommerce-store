@@ -22,13 +22,11 @@ export default class CustomCategory extends PageManager {
             query: brandInformationData,
             variables: { productId: parseInt(this.productId), },
             }).then((response) => {
-                console.log('response', response.data.site.product.brand);
                 ReactDOM.render(<BrandInformation
                                     name={response.data.site.product.brand.name}
-                                    image={response.data.site.product.brand.defaultImage.url}
+                                    defaultImage={response.data.site.product.brand.defaultImage}
                                     metaDesc={response.data.site.product.brand.metaDesc}
                                     />, this.$container);
-                console.log(this.$container);
             });
     }
 
