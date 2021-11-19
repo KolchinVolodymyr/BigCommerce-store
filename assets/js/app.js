@@ -58,6 +58,7 @@ const customClasses = {
     'pages/custom/page/custom-order-page': () => import('./theme/custom/custom-order'),
     'pages/custom/category/custom-category': () => import('./theme/custom/custom-category'),
     'pages/custom/product/multiple-order-page': () => import('./theme/custom/multiple-order-page'),
+    'pages/product': () => import('./theme/custom/brand-information-block'),
 };
 
 /**

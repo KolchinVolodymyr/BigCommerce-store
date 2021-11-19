@@ -1,0 +1,15 @@
+query brandInformationData(
+        $productId: Int!
+) {site {
+    product(entityId: $productId) {
+            id
+            brand {
+                name
+                defaultImage {
+                    url(width:100)
+                }
+                metaDesc
+            }
+        }
+    }
+}
