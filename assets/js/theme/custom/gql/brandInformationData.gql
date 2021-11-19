@@ -5,6 +5,10 @@ query brandInformationData(
             id
             brand {
                 name
+                defaultImage {
+                    url(width:100)
+                }
+                metaDesc
             }
         }
     }
