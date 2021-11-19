@@ -39,8 +39,9 @@ export default class CustomBulkOrder extends PageManager {
             query: getProductsSKU,
             variables: { sku: productSkuItem },
         }).then(res => {
-            console.log('res', res.data.site.product);
-            this.productsList.push(res.data.site.product);
+            if(res.data.site.product !== null) {
+                this.productsList.push(res.data.site.product);
+            }
         })
     }
 
@@ -106,7 +107,7 @@ export default class CustomBulkOrder extends PageManager {
                 this.cartItemsID = cart[0]?.id;
             })
             .then(()=> {
-                this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `/${this.cartItemsID}/item` : ''}`, lineItems)
+                this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, lineItems)
             })
     }
 

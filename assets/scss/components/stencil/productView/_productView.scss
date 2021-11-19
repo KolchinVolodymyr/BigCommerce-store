@@ -492,6 +492,11 @@
 @include breakpoint("medium") {
     .order-bulk-product {
         display: flex;
+        .container-out-of-stock {
+            .qtyField {
+                display: none;
+            }
+        }
         .product-name {
             width: 16%;
             text-align: center;
