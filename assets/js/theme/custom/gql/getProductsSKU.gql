@@ -1,29 +1,64 @@
 query getProductsSku(
     $sku: String,
-) {
-    site {
-      product(sku: $sku) {
-        id
-        entityId
-        name
-        sku
-        description
-        plainTextDescription
-      	inventory{
-          aggregated{
-            availableToSell
+) {  site {
+        product(sku: $sku) {
+          id
+          entityId
+          name
+          sku
+          description
+          plainTextDescription
+        	inventory{
+            aggregated{
+              availableToSell
+            }
+          }
+          prices {
+              price {
+                  currencyCode
+                  value
+              }
+          }
+          defaultImage {
+            url(width: 100)
+          }
+          variants{
+            edges{
+              node{
+                id
+                entityId
+                sku
+                productOptions{
+                  edges{
+                    node {
+                      entityId
+                      displayName
+                      isRequired
+                      ... on CheckboxOption {
+                        checkedByDefault
+                      }
+                      ... on MultipleChoiceOption {
+                        values(first: 10) {
+                          edges {
+                            node {
+                              entityId
+                              label
+                              isDefault
+                              ... on SwatchOptionValue {
+                                hexColors
+                                imageUrl(width: 200)
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-        prices {
-            price {
-                currencyCode
-                value
-            }
-        }
-        defaultImage {
-          url(width: 100)
-        }
       }
-    }
-}
+  }
 
