@@ -47,7 +47,7 @@ export default class CustomDemo extends PageManager {
             if (item.value > 0 && parseInt(item.value)) {
                 let lineItem = {
                     "quantity": parseInt(item.value),
-                    "product_id": this.productId,
+                    "product_id": parseInt(this.productId),
                     "variant_id": this.productVariants[i].entityId
                 }
                 cartItems.push(lineItem);
@@ -75,7 +75,7 @@ export default class CustomDemo extends PageManager {
                 this.cartItemsID = cart[0]?.id;
             })
             .then(()=> {
-                this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `/${this.cartItemsID}/item` : ''}`, lineitems)
+                this.createCartItems(`/api/storefront/carts/${this.cartItemsID ? `${this.cartItemsID}/item` : ''}`, lineitems)
             })
     }
 

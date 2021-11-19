@@ -45,6 +45,8 @@
     "Firefox ESR"
   ],
   "settings": {
+    "show_brand": true,
+    "show_brand_url": "/brands",
     "hide_breadcrumbs": false,
     "hide_page_heading": false,
     "hide_category_page_heading": false,
@@ -301,7 +303,7 @@
     "optimizedCheckout-loadingToaster-backgroundColor": "#333333",
     "optimizedCheckout-loadingToaster-textColor": "#ffffff",
     "optimizedCheckout-link-hoverColor": "#002fe1",
-    "product_sale_badges": "none",
+    "product_sale_badges": "sash",
     "color_badge_product_sale_badges": "#007dc6",
     "color_text_product_sale_badges": "#ffffff",
     "color_hover_product_sale_badges": "#000000",
