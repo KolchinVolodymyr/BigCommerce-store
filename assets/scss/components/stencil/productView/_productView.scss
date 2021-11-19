@@ -449,3 +449,15 @@
         padding-bottom: 0px;
     }
 }
+.container-brand {
+    display: flex;
+    .metaDesc-brand {
+        font-size: 14px;
+    }
+    .img-brand {
+        img {
+            max-width: 80px;
+        }
+        margin-right: 10px;
+    }
+}

@@ -4,7 +4,7 @@ import brandInformationData from './gql/brandInformationData.gql';
 import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import BrandItem from './reactComponent/BrandItem';
+import BrandInformation from './reactComponent/BrandInformation';
 
 export default class CustomCategory extends PageManager {
     constructor(context) {
@@ -21,14 +21,18 @@ export default class CustomCategory extends PageManager {
         .query({
             query: brandInformationData,
             variables: { productId: parseInt(this.productId), },
-            }).then((data) => {
-                console.log('data', data);
-                //ReactDOM.render(<BrandItem />, this.$container);
+            }).then((response) => {
+                console.log('response', response.data.site.product.brand);
+                ReactDOM.render(<BrandInformation
+                                    name={response.data.site.product.brand.name}
+                                    image={response.data.site.product.brand.defaultImage.url}
+                                    metaDesc={response.data.site.product.brand.metaDesc}
+                                    />, this.$container);
                 console.log(this.$container);
             });
     }
 
     onReady() {
-        this.getOptions()
+        this.getOptions();
     }
 }
