@@ -100,4 +100,17 @@ export default function (secureBaseUrl, cartId) {
     } else {
         $body.trigger('cart-quantity-update', quantity);
     }
+
+    $cartDropdown.on('click', event => {
+        setTimeout(() => {
+            $cartDropdown.addClass("is-open")
+        }, 0);
+        console.log('event', event);
+        document.querySelectorAll('.previewCartList .cart-item-qty-input').forEach((element) => {
+        console.log('el', element);
+            element.addEventListener('input', function(){
+                console.log('this', this);
+            })
+        })
+    })
 }

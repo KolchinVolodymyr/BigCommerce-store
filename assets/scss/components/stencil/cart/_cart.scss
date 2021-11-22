@@ -563,6 +563,11 @@ $card-preview-zoom-bottom-offset:       6rem;
     display: table;
     table-layout: fixed;
     width: 100%;
+    display: contents;
+    .form-increment {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 .previewCartItem {
