@@ -16,7 +16,7 @@ export default class CustomerLogged extends React.Component {
         },
         {
             selector:  $input,
-            validate: "max-number:10",
+            validate: "max-length:10",
             errorMessage: "Error max 10"
         }]);
         this.Nod.performCheck();
