@@ -102,6 +102,7 @@ export default function (secureBaseUrl, cartId) {
     }
 
     $cartDropdown.on('click', event => {
+        event.preventDefault();
         setTimeout(() => {
             $cartDropdown.addClass("is-open")
         }, 0);
@@ -114,6 +115,25 @@ export default function (secureBaseUrl, cartId) {
                 const oldQty = parseInt($el.val(), 10);
                 const newQty = element.dataset.action === 'inc' ? oldQty + 1 : oldQty - 1;
                 $el.val(newQty);
+                utils.api.cart.itemUpdate(cartItemid, newQty,(response, err) => {
+                    console.log('res', response);
+                });
+
+                const options = {
+                    template: 'common/cart-preview',
+                };
+                $cartDropdown
+                    .addClass(loadingClass)
+                    .html($cartLoading);
+                $cartLoading
+                    .show();
+                utils.api.cart.getContent(options, (err, response) => {
+                    $cartDropdown
+                        .removeClass(loadingClass)
+                        .html(response);
+                    $cartLoading
+                        .hide();
+                });
             };
         })
     })
