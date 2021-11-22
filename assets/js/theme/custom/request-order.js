@@ -4,6 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CustomerData from './reactComponent/customerData'
 import { showAlertModal } from '../global/modal';
+import initApolloClient from '../global/graphql/client';
+import customerData from './gql/customerData.gql';
+import CustomerNoLogged from './reactComponent/CustomerNoLogged';
 
 export default class Custom extends PageManager {
     constructor(context) {
@@ -13,7 +16,17 @@ export default class Custom extends PageManager {
         this.$addToCartBtn.on('click', () => this.customAddToCartButton());
         this.$totalContainer = $('#request-order')[0];
         this.customerData = null;
+        this.gqlClient = initApolloClient(this.context.storefrontAPIToken);
     }
+    onReady() {
+        this.gqlClient.query({
+           query: customerData,
+        }).then(res => {
+            if(res.data.customer===null) {
+                ReactDOM.render(<CustomerNoLogged/>, this.$totalContainer);
+            }
+        })
+   }
     customAddToCartButton () {
         let orderID = this.$inputIdOrder.value;
         fetch(`/api/storefront/orders/${orderID}`, { credentials: 'include' })
