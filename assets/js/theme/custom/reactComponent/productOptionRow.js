@@ -9,7 +9,8 @@ export default class ProductOptionsRow extends React.Component {
         }
         this.productVariantPrice = 0;
         this.Nod = nod();
-        this.Nod.configure({submit: document.getElementById('productVariants'), disableSubmit: true});
+        this.$addToCartBtnBelow = $('#productVariants');
+        //this.Nod.configure({submit: '.button', disableSubmit: true});
         this.stock = this.props.variant.inventory?.aggregated.availableToSell;
     }
 

@@ -57,7 +57,11 @@ const customClasses = {
     'pages/custom/product/product-engraving': () => import('./theme/custom/product-engraving'),
     'pages/custom/page/custom-order-page': () => import('./theme/custom/custom-order'),
     'pages/custom/category/custom-category': () => import('./theme/custom/custom-category'),
+    'pages/checkout': () => import('./theme/custom/checkout'),
     'pages/custom/product/multiple-order-page': () => import('./theme/custom/multiple-order-page'),
+    'pages/custom/page/request-order': () => import('./theme/custom/request-order'),
+    'pages/custom/page/bulk-order': () => import('./theme/custom/bulk-order'),
+    'pages/product': () => import('./theme/custom/WebDav'),
 };
 
 /**

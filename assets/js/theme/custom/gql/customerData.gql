@@ -1,0 +1,19 @@
+query customerData {
+  customer {
+    firstName
+    entityId
+    attributes {
+      productBulkOrderList: attribute(entityId: 2) {
+        entityId
+        value
+        name
+      }
+      showPage: attribute(entityId: 4) {
+        entityId
+        value
+        name
+      }
+    }
+  }
+}
+

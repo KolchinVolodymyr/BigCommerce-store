@@ -449,3 +449,80 @@
         padding-bottom: 0px;
     }
 }
+.order-bulk-product {
+    display: block;
+    margin-bottom: 30px;
+    border: 1px solid rgb(82, 82, 82);
+    border-radius: 25px;
+    align-items: center;
+    padding: 15px;
+    .product-name {
+        text-align: center;
+    }
+    .product-price {
+        text-align: center;
+    }
+    img {
+        margin: 0 auto;
+        display: flex;
+    }
+    .product-count {
+        .qtyField {
+            width: 80%;
+            display: flex;
+            margin: 0 auto;
+        }
+        .form-inlineMessage {
+            position: absolute;
+            width: 200px;
+        }
+    }
+}
+.containerDetailProduct {
+    .total {
+        display: flex;
+        flex-direction: column;
+        .total-price {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+//*//
+@include breakpoint("medium") {
+    .order-bulk-product {
+        display: flex;
+        .product-name {
+            width: 16%;
+            text-align: center;
+        }
+        img {
+            width: 16%;
+        }
+        .product-description {
+            width: 40%;
+        }
+        .product-price {
+            width: 12%;
+            text-align: center;
+        }
+        .product-count {
+            width: 15%;
+            .qtyField {
+                width: 100%;
+            }
+            .form-inlineMessage {
+                position: absolute;
+                width: 200px;
+            }
+        }
+    }
+    .containerDetailProduct {
+        .total {
+            button {
+                margin: 0 auto;
+                width: 350px;
+            }
+        }
+    }
+}

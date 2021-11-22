@@ -197,3 +197,51 @@
 .product {
     overflow: hidden;
 }
+.container-badges-position {
+    .bange__closeout {
+        position: absolute;
+        width: 100%;
+        background: $white;
+        height: 20px;
+        z-index: 1;
+         .icons {
+            @extend %base-flag-side;
+            @include setFlagColors("color_badge_product_sale_badges", "color_text_product_sale_badges");
+        }
+    }
+    .bange__new {
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        background: $white;
+        z-index: 2;
+        .icons {
+            @extend %base-flag-side;
+            @include setFlagColors("color_badge_product_sale_badges", "color_text_product_sale_badges");
+        }
+    }
+    .bange__free-shipping {
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        background: $white;
+        height: 20px;
+        z-index: 3;
+        .icons {
+            @extend %base-flag-side;
+            @include setFlagColors("color_badge_product_sale_badges", "color_text_product_sale_badges");
+        }
+    }
+    .bange__price {
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        background: $white;
+        height: 20px;
+        z-index: 4;
+        .icons {
+            @extend %base-flag-side;
+            @include setFlagColors("color_badge_product_sale_badges", "color_text_product_sale_badges");
+        }
+    }
+}
