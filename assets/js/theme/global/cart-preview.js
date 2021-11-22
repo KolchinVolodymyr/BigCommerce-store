@@ -105,12 +105,16 @@ export default function (secureBaseUrl, cartId) {
         setTimeout(() => {
             $cartDropdown.addClass("is-open")
         }, 0);
-        console.log('event', event);
-        document.querySelectorAll('.previewCartList .cart-item-qty-input').forEach((element) => {
-        console.log('el', element);
-            element.addEventListener('input', function(){
-                console.log('this', this);
-            })
+
+        document.querySelectorAll('.previewCartList .button').forEach((element) => {
+            if (element == event.target.parentElement.parentElement) {
+                event.preventDefault();
+                const cartItemid = element.dataset.cartItemid;
+                const $el = $(`#qty-${cartItemid}`);
+                const oldQty = parseInt($el.val(), 10);
+                const newQty = element.dataset.action === 'inc' ? oldQty + 1 : oldQty - 1;
+                $el.val(newQty);
+            };
         })
     })
 }
