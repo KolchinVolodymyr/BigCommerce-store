@@ -14,7 +14,7 @@ export default function (secureBaseUrl, cartId) {
     const $cartLoading = $('<div class="loadingOverlay"></div>');
 
     const $body = $('body');
-
+    console.log('$cart', $cart);
     if (window.ApplePaySession) {
         $cartDropdown.addClass('apple-pay-supported');
     }
@@ -102,11 +102,12 @@ export default function (secureBaseUrl, cartId) {
     }
 
     $cartDropdown.on('click', event => {
-        event.preventDefault();
+        // event.preventDefault();
         setTimeout(() => {
             $cartDropdown.addClass("is-open")
         }, 0);
-
+        console.log('event target', event.target);
+        $cartDropdown.addClass("is-open");
         document.querySelectorAll('.previewCartList .button').forEach((element) => {
             if (element == event.target.parentElement.parentElement) {
                 event.preventDefault();
@@ -135,6 +136,21 @@ export default function (secureBaseUrl, cartId) {
                         .hide();
                 });
             };
+        })
+
+        document.querySelectorAll('.previewCartList .cart-item-qty-input').forEach((element) => {
+            element.addEventListener('input', function(e){
+                console.log('e', e.target.value);
+                console.log('e.target', e.target);
+                const $elementInput = e.target;
+                // const $el = $(`#qty-${cartItemid}`);
+                const cartItemid = $elementInput.getAttribute('data-cart-itemid');
+                console.log('cartItemid', cartItemid);
+                utils.api.cart.itemUpdate(cartItemid, $elementInput,(response, err) => {
+                    console.log('res', response);
+                    console.log('err', err);
+                });
+            })
         })
     })
 }
