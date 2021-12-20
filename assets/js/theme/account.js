@@ -26,6 +26,9 @@ export default class Account extends PageManager {
 
     onReady() {
         $('input[data-label="Secret code"]')[0].setAttribute('readonly', 'readonly');
+        $('input[data-label="Secret code"]')[0].addEventListener('input',(event)=>{
+            event.target.value = '';
+        });
         const $editAccountForm = classifyForm('form[data-edit-account-form]');
         const $addressForm = classifyForm('form[data-address-form]');
         const $inboxForm = classifyForm('form[data-inbox-form]');
